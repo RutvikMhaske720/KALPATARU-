@@ -13,6 +13,12 @@ export default function Hero({ brand }) {
         <div className="hero-circle hero-circle-1" />
         <div className="hero-circle hero-circle-2" />
         <div className="hero-circle hero-circle-3" />
+        
+        {/* Decorative Indian Motifs from uploaded sprite */}
+        <div className="motif motif-parrot" />
+        <div className="motif motif-peacock" />
+        <div className="motif motif-elephant" />
+
         {/* Decorative botanical SVG border */}
         <svg className="hero-border-left" width="60" height="400" viewBox="0 0 60 400" fill="none">
           <path d="M30 0 Q35 50 25 100 Q15 150 30 200 Q45 250 25 300 Q15 350 30 400" stroke="var(--gold)" strokeWidth="0.6" opacity="0.12" />
@@ -183,6 +189,60 @@ export default function Hero({ brand }) {
           right: 20px;
           top: 50%;
           transform: translateY(-50%);
+        }
+
+        /* ── Floating Indian Motifs ── */
+        .motif {
+          position: absolute;
+          width: 200px;
+          height: 200px;
+          background-image: url('/assets/images/indian-motifs.png');
+          background-size: 300% auto;
+          background-repeat: no-repeat;
+          
+          /* Force beige background to pure white, keep lines black */
+          filter: grayscale(1) contrast(3) brightness(1.3);
+          mix-blend-mode: multiply;
+          opacity: 0.12; /* Subtle watermark */
+          z-index: 0;
+          pointer-events: none;
+        }
+
+        [data-theme='dark'] .motif {
+          /* Invert to make lines white, background black, then screen */
+          filter: grayscale(1) contrast(3) brightness(1.3) invert(1);
+          mix-blend-mode: screen;
+          opacity: 0.12;
+        }
+
+        .motif-parrot {
+          background-position: left center;
+          bottom: 10%;
+          right: 8%;
+          animation: motifFloat 12s ease-in-out infinite alternate;
+        }
+
+        .motif-peacock {
+          background-position: center center;
+          top: 15%;
+          left: 10%;
+          width: 180px;
+          height: 180px;
+          animation: motifFloat 15s ease-in-out infinite alternate-reverse;
+        }
+
+        .motif-elephant {
+          background-position: right center;
+          bottom: 12%;
+          left: 8%;
+          width: 220px;
+          height: 220px;
+          animation: motifFloat 18s ease-in-out infinite alternate;
+        }
+
+        @keyframes motifFloat {
+          0% { transform: translateY(0) rotate(0deg); }
+          100% { transform: translateY(-20px) rotate(2deg); }
         }
 
         .hero-content {
