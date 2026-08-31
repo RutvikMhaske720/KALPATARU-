@@ -6,8 +6,9 @@ export default function KalpataruLogo({ size = 120 }) {
   return (
     <div className="kalpataru-logo-wrap" aria-label="Kalpataru Logo">
       <div className="logo-glow" aria-hidden="true" />
+
       <img
-        src="/assets/images/kalpataru-logo.jpg"
+        src="/assets/images/kalpataru-logo-transparent.png"
         alt="Kalpataru — The wish-fulfilling tree with peacocks, artisan tools, and traditional craft symbols"
         width={size}
         height={size}
@@ -35,7 +36,7 @@ export default function KalpataruLogo({ size = 120 }) {
         }
 
         .kalpataru-logo-wrap:hover .kalpataru-logo-img {
-          filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.35));
+          filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.4));
         }
 
         .logo-glow {
@@ -58,10 +59,17 @@ export default function KalpataruLogo({ size = 120 }) {
           position: relative;
           z-index: 1;
           object-fit: contain;
-          border-radius: 50%;
+          border-radius: 8px;
           animation: logoFloat 6s ease-in-out infinite alternate;
-          filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.12));
           transition: filter 0.5s ease;
+          
+          /* The logo is now a true transparent PNG, so no complex CSS filters needed! */
+          filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.2));
+        }
+
+        /* Dark Mode adjustments (optional) */
+        [data-theme='dark'] .kalpataru-logo-img {
+          filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.4));
         }
 
         @keyframes logoFloat {

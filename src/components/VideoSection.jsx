@@ -1,9 +1,10 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import AndroidFrame from './AndroidFrame';
+import InfiniteSpiral from './InfiniteSpiral';
 
 /**
- * VideoSection — Full-viewport cinematic video player
- * Supports local MP4 and YouTube embed, configured via props from content.json
+ * VideoSection — Two-column layout with Infinite Spiral on left and video on right.
  */
 export default function VideoSection({ videoConfig }) {
   const videoRef = useRef(null);
@@ -14,7 +15,6 @@ export default function VideoSection({ videoConfig }) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsVisible(entry.isIntersecting);
-        // Auto-pause when out of view for performance
         if (videoRef.current) {
           if (entry.isIntersecting) {
             videoRef.current.play().catch(() => {});
@@ -23,7 +23,7 @@ export default function VideoSection({ videoConfig }) {
           }
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
 
     if (containerRef.current) {
@@ -33,7 +33,6 @@ export default function VideoSection({ videoConfig }) {
     return () => observer.disconnect();
   }, []);
 
-  // Convert YouTube URL to embed URL
   const getYouTubeEmbedUrl = (url) => {
     if (!url) return '';
     let videoId = '';
@@ -47,7 +46,6 @@ export default function VideoSection({ videoConfig }) {
         videoId = urlObj.searchParams.get('v');
       }
     } catch (e) {
-      // fallback: try regex
       const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|live\/))([^?&/]+)/);
       if (match) videoId = match[1];
     }
@@ -57,101 +55,160 @@ export default function VideoSection({ videoConfig }) {
 
   const isYouTube = videoConfig?.type === 'youtube' && videoConfig?.youtubeUrl;
 
+  // 13 screens for the infinite spiral
+  const spiralItems = Array.from({ length: 13 }, (_, i) => ({
+    src: `/assets/images/${i + 1}.jpeg`,
+    alt: `Kalpataru App Screen ${i + 1}`
+  }));
+
   return (
     <motion.section
       ref={containerRef}
-      className="video-section"
+      className="video-section section"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 1 }}
-      aria-label="Kalpataru showcase video"
+      aria-label="Kalpataru App Showcase"
     >
-      <div className="video-container">
-        {isYouTube ? (
-          <iframe
-            src={getYouTubeEmbedUrl(videoConfig.youtubeUrl)}
-            title="Kalpataru Video"
-            frameBorder="0"
-            allow="autoplay; encrypted-media; picture-in-picture"
-            allowFullScreen
-            className="video-iframe"
-            loading="lazy"
-          />
-        ) : (
-          <video
-            ref={videoRef}
-            className="video-element"
-            autoPlay
-            loop
-            controls
-            playsInline
-            preload="metadata"
-            poster=""
-          >
-            <source src={videoConfig?.localPath || '/assets/video/kalpataru.mp4'} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        )}
+      <div className="showcase-container">
+        
+        {/* Left Column: Infinite Spiral */}
+        <div className="showcase-col-left">
+          <div className="spiral-wrapper">
+            <InfiniteSpiral
+              items={spiralItems}
+              animationMode="all"
+              speed={0.55}
+              radius={180}
+              cardWidth={140}
+              cardHeight={280}
+              verticalSpacing={80}
+              perspective={1000}
+              cardRadius={12}
+              centerScale={1.3}
+              edgeBlur={4}
+              cardsPerTurn={8}
+              pauseOnHover={true}
+              imageFit="cover"
+            />
+          </div>
+        </div>
 
-        {/* Top/bottom gradient fade for cinematic feel */}
-        <div className="video-gradient-top" />
-        <div className="video-gradient-bottom" />
+        {/* Right Column: Mobile Video Frame */}
+        <div className="showcase-col-right">
+          <div className="video-frame-wrapper">
+            {isYouTube ? (
+              <div className="youtube-wrapper">
+                <iframe
+                  src={getYouTubeEmbedUrl(videoConfig.youtubeUrl)}
+                  title="Kalpataru Video"
+                  frameBorder="0"
+                  allow="autoplay; encrypted-media; picture-in-picture"
+                  allowFullScreen
+                  className="video-iframe"
+                  loading="lazy"
+                />
+              </div>
+            ) : (
+              <AndroidFrame scale={1.3} title="Live App Demo">
+                <video
+                  ref={videoRef}
+                  className="video-element-mobile"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                >
+                  <source src={videoConfig?.localPath || '/assets/video/kalpataru.mp4'} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </AndroidFrame>
+            )}
+          </div>
+        </div>
+
       </div>
 
       <style>{`
         .video-section {
-          width: 100vw;
-          height: 100vh;
           position: relative;
+          width: 100%;
+          min-height: 100vh;
           overflow: hidden;
           background: #0a0a08;
-          margin-left: calc(-50vw + 50%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 4rem 2rem;
         }
 
-        .video-container {
+        .showcase-container {
+          display: flex;
+          width: 100%;
+          max-width: var(--max-width);
+          align-items: center;
+          justify-content: space-between;
+          gap: 4rem;
+        }
+
+        .showcase-col-left {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 80vh;
+          min-height: 600px;
           position: relative;
-          width: 100%;
-          height: 100%;
         }
 
-        .video-element {
+        .spiral-wrapper {
           width: 100%;
           height: 100%;
-          object-fit: cover;
+          position: relative;
+        }
+
+        .showcase-col-right {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          z-index: 5;
+        }
+
+        .video-frame-wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+        }
+
+        .youtube-wrapper {
+          width: 100%;
+          max-width: 800px;
+          aspect-ratio: 16/9;
+          border-radius: var(--radius-lg);
+          overflow: hidden;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
         .video-iframe {
           width: 100%;
           height: 100%;
-          border: none;
         }
 
-        .video-gradient-top {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 120px;
-          background: linear-gradient(to bottom, rgba(250, 247, 242, 0.6), transparent);
-          pointer-events: none;
-          z-index: 2;
-        }
-
-        .video-gradient-bottom {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: 120px;
-          background: linear-gradient(to top, rgba(250, 247, 242, 0.6), transparent);
-          pointer-events: none;
-          z-index: 2;
-        }
-
-        @media (max-width: 768px) {
-          .video-section {
+        @media (max-width: 900px) {
+          .showcase-container {
+            flex-direction: column-reverse;
+            gap: 2rem;
+          }
+          .showcase-col-left {
             height: 60vh;
+            min-height: 400px;
+            width: 100%;
           }
         }
       `}</style>

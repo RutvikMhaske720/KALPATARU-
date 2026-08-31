@@ -5,74 +5,74 @@
     "subtitle": "Where ancient craftsmanship meets modern technology"
   },
   "video": {
-    "type": "youtube",
+    "type": "local",
     "localPath": "/assets/video/kalpataru.mp4",
     "youtubeUrl": "null"
   },
   "appScreens": [
     {
       "id": 1,
-      "image": "/assets/images/screen-01.png",
+      "image": "/assets/images/1.jpeg",
       "title": "Welcome to Kalpataru",
       "description": "Begin the artisan's digital journey"
     },
     {
       "id": 2,
-      "image": "/assets/images/screen-02.png",
+      "image": "/assets/images/2.jpeg",
       "title": "Dashboard",
       "description": "Your craft command centre"
     },
     {
       "id": 3,
-      "image": "/assets/images/screen-03.png",
-      "title": "Profile Setup",
-      "description": "Create your artisan identity"
+      "image": "/assets/images/3.jpeg",
+      "title": "Upload Images of Crafts",
+      "description": "Add your craft images"
     },
     {
       "id": 4,
-      "image": "/assets/images/screen-04.png",
-      "title": "Product Entry",
-      "description": "Add your creations effortlessly"
-    },
-    {
-      "id": 5,
-      "image": "/assets/images/screen-05.png",
+      "image": "/assets/images/4.jpeg",
       "title": "Voice Input & Real-Time Translation",
       "description": "Speak in your language, reach the world"
     },
     {
+      "id": 5,
+      "image": "/assets/images/5.jpeg",
+      "title": "3 images output",
+      "description": "Enhaced image,background removed image and e-commerce style image"
+    },
+    {
       "id": 6,
-      "image": "/assets/images/screen-06.png",
+      "image": "/assets/images/6.jpeg",
       "title": "Catalogue & Description",
       "description": "AI-crafted product stories"
     },
     {
       "id": 7,
-      "image": "/assets/images/screen-07.png",
+      "image": "/assets/images/7.jpeg",
       "title": "E-Commerce Poster",
       "description": "Marketing materials in one tap"
     },
     {
       "id": 8,
-      "image": "/assets/images/screen-08.png",
+      "image": "/assets/images/8.jpeg",
       "title": "Price Analytics",
       "description": "Smart pricing intelligence"
     },
     {
       "id": 9,
-      "image": "/assets/images/screen-09.png",
+      "image": "/assets/images/9.jpeg",
       "title": "Final Catalogue",
       "description": "Your professional digital catalogue"
     },
     {
       "id": 10,
-      "image": "/assets/images/screen-10.png",
+      "image": "/assets/images/10.jpeg",
       "title": "Bazar",
       "description": "The digital marketplace for artisans"
     }
   ],
   "governmentScheme": {
-    "image": "/assets/images/screen-11.png",
+    "image": "/assets/images/11.jpeg",
     "title": "Government Schemes",
     "subtitle": "Connecting artisans with opportunities, government initiatives and digital support.",
     "items": [
@@ -81,13 +81,13 @@
     ]
   },
   "offlineExhibition": {
-    "image": "/assets/images/screen-12.png",
+    "image": "/assets/images/12.jpeg",
     "title": "Offline Exhibition Update",
     "subtitle": "Bridging the gap between digital presence and physical showcases.",
     "description": "Stay informed about local exhibitions, melas, and craft fairs. Kalpataru brings offline opportunities to your fingertips, ensuring no artisan misses a chance to showcase their craft."
   },
   "finalScreen": {
-    "image": "/assets/images/screen-13.png",
+    "image": "/assets/images/13.jpeg",
     "title": "The Kalpataru Experience",
     "subtitle": "A complete digital ecosystem designed for India's artisans — from creation to marketplace, from tradition to transformation."
   },

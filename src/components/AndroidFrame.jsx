@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
  * AndroidFrame — Realistic Android phone mockup frame
  * Props: image, title, index (for stagger), scale (default 1)
  */
-export default function AndroidFrame({ image, title, index = 0, scale = 1 }) {
+export default function AndroidFrame({ image, title, index = 0, scale = 1, children }) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -33,24 +33,30 @@ export default function AndroidFrame({ image, title, index = 0, scale = 1 }) {
 
           {/* Screen area */}
           <div className="phone-screen">
-            {!imageLoaded && !imageError && (
-              <div className="phone-screen-placeholder">
-                <div className="loading-shimmer" />
-              </div>
-            )}
-            {imageError ? (
-              <div className="phone-screen-error">
-                <span>📱</span>
-              </div>
+            {children ? (
+              children
             ) : (
-              <img
-                src={image}
-                alt={title || 'App screen'}
-                loading="lazy"
-                onLoad={() => setImageLoaded(true)}
-                onError={() => setImageError(true)}
-                className={`phone-screen-img ${imageLoaded ? 'loaded' : ''}`}
-              />
+              <>
+                {!imageLoaded && !imageError && (
+                  <div className="phone-screen-placeholder">
+                    <div className="loading-shimmer" />
+                  </div>
+                )}
+                {imageError ? (
+                  <div className="phone-screen-error">
+                    <span>📱</span>
+                  </div>
+                ) : (
+                  <img
+                    src={image}
+                    alt={title || 'App screen'}
+                    loading="lazy"
+                    onLoad={() => setImageLoaded(true)}
+                    onError={() => setImageError(true)}
+                    className={`phone-screen-img ${imageLoaded ? 'loaded' : ''}`}
+                  />
+                )}
+              </>
             )}
 
             {/* Glass reflection */}
