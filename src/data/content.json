@@ -4,13 +4,11 @@
     "tagline": "Empowering Indian Artisans Through Digital Transformation",
     "subtitle": "Where ancient craftsmanship meets modern technology"
   },
-
   "video": {
     "type": "youtube",
     "localPath": "/assets/video/kalpataru.mp4",
-    "youtubeUrl": "https://youtu.be/VJ9VC9OqdAA?si=Ko5ky146hrcqFe5Z"
+    "youtubeUrl": "null"
   },
-
   "appScreens": [
     {
       "id": 1,
@@ -73,7 +71,6 @@
       "description": "The digital marketplace for artisans"
     }
   ],
-
   "governmentScheme": {
     "image": "/assets/images/screen-11.png",
     "title": "Government Schemes",
@@ -83,29 +80,37 @@
       "PM Vishwakarma Yojna"
     ]
   },
-
   "offlineExhibition": {
     "image": "/assets/images/screen-12.png",
     "title": "Offline Exhibition Update",
     "subtitle": "Bridging the gap between digital presence and physical showcases.",
     "description": "Stay informed about local exhibitions, melas, and craft fairs. Kalpataru brings offline opportunities to your fingertips, ensuring no artisan misses a chance to showcase their craft."
   },
-
   "finalScreen": {
     "image": "/assets/images/screen-13.png",
     "title": "The Kalpataru Experience",
     "subtitle": "A complete digital ecosystem designed for India's artisans — from creation to marketplace, from tradition to transformation."
   },
-
   "journey": {
     "title": "Kalpataru App Journey",
     "subtitle": "Follow the path of digital transformation — from onboarding to marketplace"
   },
-
   "navigation": [
-    { "id": "hero", "label": "Home" },
-    { "id": "journey", "label": "App Journey" },
-    { "id": "schemes", "label": "Schemes" },
-    { "id": "exhibition", "label": "Exhibition" }
+    {
+      "id": "hero",
+      "label": "Home"
+    },
+    {
+      "id": "journey",
+      "label": "App Journey"
+    },
+    {
+      "id": "schemes",
+      "label": "Schemes"
+    },
+    {
+      "id": "exhibition",
+      "label": "Exhibition"
+    }
   ]
 }
