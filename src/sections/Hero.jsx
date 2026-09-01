@@ -104,6 +104,17 @@ export default function Hero({ brand }) {
           >
             Download APK
           </motion.a>
+          <motion.a 
+            href="https://web-zeta-six-43.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="explore-online-btn"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.6 }}
+          >
+            Explore Online (Prototype)
+          </motion.a>
         </motion.div>
       </div>
 
@@ -346,6 +357,30 @@ export default function Hero({ brand }) {
           background: transparent;
           color: var(--gold-dark);
           border-color: var(--gold);
+        }
+
+        .explore-online-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0.8rem 2rem;
+          background: transparent;
+          color: var(--gold);
+          font-family: var(--font-body);
+          font-weight: 600;
+          font-size: 0.95rem;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          text-decoration: none;
+          border-radius: 30px;
+          transition: all 0.3s ease;
+          border: 2px solid var(--gold);
+        }
+
+        .explore-online-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(212, 175, 55, 0.2);
+          background: rgba(212, 175, 55, 0.1);
         }
 
         .hero-scroll-hint {

@@ -5,9 +5,9 @@
     "subtitle": "Where ancient craftsmanship meets modern technology"
   },
   "video": {
-    "type": "local",
+    "type": "youtube",
     "localPath": "/assets/video/kalpataru.mp4",
-    "youtubeUrl": "null"
+    "youtubeUrl": "https://youtu.be/v_Rvz14ak4A?si=rffVDIo04IeY2Ojd"
   },
   "appScreens": [
     {
