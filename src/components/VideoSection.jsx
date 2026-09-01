@@ -71,6 +71,10 @@ export default function VideoSection({ videoConfig }) {
       transition={{ duration: 1 }}
       aria-label="Kalpataru App Showcase"
     >
+      <div className="video-header">
+        <div className="section-divider" />
+        <h2 className="heading-section">Working Prototype Video</h2>
+      </div>
       <div className="showcase-container">
         
         {/* Left Column: Infinite Spiral */}
@@ -99,7 +103,7 @@ export default function VideoSection({ videoConfig }) {
         <div className="showcase-col-right">
           <div className="video-frame-wrapper">
             {isYouTube ? (
-              <div className="youtube-wrapper">
+              <AndroidFrame scale={1.8} title="Live Demo of App">
                 <iframe
                   src={getYouTubeEmbedUrl(videoConfig.youtubeUrl)}
                   title="Kalpataru Video"
@@ -109,7 +113,7 @@ export default function VideoSection({ videoConfig }) {
                   className="video-iframe"
                   loading="lazy"
                 />
-              </div>
+              </AndroidFrame>
             ) : (
               <AndroidFrame scale={1.3} title="Live App Demo">
                 <video
@@ -140,9 +144,21 @@ export default function VideoSection({ videoConfig }) {
           overflow: hidden;
           background: #0a0a08;
           display: flex;
+          flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 4rem 2rem;
+          padding: 6rem 2rem 4rem;
+        }
+
+        .video-header {
+          text-align: center;
+          margin-bottom: 2rem;
+          width: 100%;
+          z-index: 10;
+        }
+        
+        .video-header .heading-section {
+          color: var(--gold);
         }
 
         .showcase-container {
@@ -186,18 +202,10 @@ export default function VideoSection({ videoConfig }) {
           width: 100%;
         }
 
-        .youtube-wrapper {
-          width: 100%;
-          max-width: 800px;
-          aspect-ratio: 16/9;
-          border-radius: var(--radius-lg);
-          overflow: hidden;
-          box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
         .video-iframe {
           width: 100%;
           height: 100%;
+          display: block;
         }
 
         @media (max-width: 900px) {

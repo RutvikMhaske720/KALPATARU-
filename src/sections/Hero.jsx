@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import KalpataruLogo from '../components/KalpataruLogo';
 
 /**
@@ -6,6 +7,8 @@ import KalpataruLogo from '../components/KalpataruLogo';
  * "WELCOME TO KALPATARU" with large typography, cultural motifs, ambient animation
  */
 export default function Hero({ brand }) {
+  const [isPdfOpen, setIsPdfOpen] = useState(false);
+
   return (
     <section className="hero" id="hero" aria-label="Welcome to Kalpataru">
       {/* Background decorative elements */}
@@ -115,8 +118,45 @@ export default function Hero({ brand }) {
           >
             Explore Online (Prototype)
           </motion.a>
+          <motion.button 
+            onClick={() => setIsPdfOpen(true)}
+            className="view-pdf-btn"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.7 }}
+          >
+            View Presentation (PDF)
+          </motion.button>
         </motion.div>
       </div>
+
+      {/* PDF Modal */}
+      <AnimatePresence>
+        {isPdfOpen && (
+          <motion.div 
+            className="pdf-modal-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsPdfOpen(false)}
+          >
+            <motion.div 
+              className="pdf-modal-content"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button className="pdf-close-btn" onClick={() => setIsPdfOpen(false)}>×</button>
+              <iframe 
+                src="/SIH26090_Kalpataru.pdf" 
+                title="Presentation PDF"
+                className="pdf-iframe"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Scroll indicator */}
       <motion.div
@@ -381,6 +421,84 @@ export default function Hero({ brand }) {
           transform: translateY(-2px);
           box-shadow: 0 6px 20px rgba(212, 175, 55, 0.2);
           background: rgba(212, 175, 55, 0.1);
+        }
+
+        .view-pdf-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0.8rem 2rem;
+          background: rgba(212, 175, 55, 0.05);
+          color: var(--gold);
+          font-family: var(--font-body);
+          font-weight: 600;
+          font-size: 0.95rem;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          border-radius: 30px;
+          transition: all 0.3s ease;
+          border: 1px solid var(--gold);
+          cursor: pointer;
+        }
+
+        .view-pdf-btn:hover {
+          transform: translateY(-2px);
+          background: rgba(212, 175, 55, 0.15);
+          box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .pdf-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          background: rgba(10, 10, 8, 0.8);
+          backdrop-filter: blur(8px);
+          z-index: 1000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 2rem;
+        }
+
+        .pdf-modal-content {
+          position: relative;
+          width: 100%;
+          max-width: 1200px;
+          height: 90vh;
+          background: var(--bg-primary);
+          border-radius: var(--radius-lg);
+          overflow: hidden;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+          border: 1px solid var(--gold);
+        }
+
+        .pdf-close-btn {
+          position: absolute;
+          top: 1rem;
+          right: 1.5rem;
+          font-size: 2rem;
+          color: var(--text-primary);
+          background: var(--bg-secondary);
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 10;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          border: 1px solid var(--gold);
+        }
+
+        .pdf-close-btn:hover {
+          background: var(--gold);
+          color: var(--bg-primary);
+        }
+
+        .pdf-iframe {
+          width: 100%;
+          height: 100%;
+          border: none;
         }
 
         .hero-scroll-hint {

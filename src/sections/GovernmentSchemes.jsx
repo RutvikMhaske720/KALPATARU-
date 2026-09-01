@@ -128,7 +128,7 @@ export default function GovernmentSchemes({ data }) {
           align-items: flex-start;
           gap: 1rem;
           padding: 1.2rem;
-          background: linear-gradient(135deg, rgba(250, 247, 242, 0.8), rgba(237, 228, 216, 0.5));
+          background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
           border: 1px solid rgba(212, 175, 55, 0.15);
           border-radius: var(--radius-lg);
           transition: all 0.3s var(--ease-out);
