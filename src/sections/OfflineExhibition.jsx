@@ -10,6 +10,9 @@ export default function OfflineExhibition({ data }) {
 
   return (
     <section className="offline-exhibition section" id="exhibition" aria-label="Offline Exhibition">
+      <div className="bg-decor" aria-hidden="true">
+        <div className="decor-img decor-1" />
+      </div>
       <motion.div
         className="exhibition-header"
         initial={{ opacity: 0, y: 30 }}
@@ -68,6 +71,45 @@ export default function OfflineExhibition({ data }) {
       <style>{`
         .offline-exhibition {
           position: relative;
+        }
+
+        .bg-decor {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          z-index: 0;
+          overflow: hidden;
+        }
+
+        .decor-img {
+          position: absolute;
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          opacity: 0.15;
+          mix-blend-mode: multiply;
+          border-radius: 50%;
+          filter: grayscale(0.3) contrast(1.2);
+        }
+
+        [data-theme='dark'] .decor-img {
+          mix-blend-mode: screen;
+          filter: grayscale(0.3) contrast(1.2) invert(0.8);
+          opacity: 0.1;
+        }
+
+        .decor-1 {
+          width: 450px;
+          height: 450px;
+          top: -100px;
+          left: -150px;
+          background-image: url('/assets/images/decor2.jpg');
+          animation: floatDecor 25s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatDecor {
+          0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+          100% { transform: translate(40px, 40px) rotate(15deg) scale(1.05); }
         }
 
         .exhibition-header {

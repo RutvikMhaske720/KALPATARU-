@@ -10,6 +10,9 @@ export default function FinalShowcase({ data }) {
 
   return (
     <section className="final-showcase section" aria-label="The Kalpataru Experience">
+      <div className="bg-decor" aria-hidden="true">
+        <div className="decor-img decor-3" />
+      </div>
       <div className="final-border" aria-hidden="true" />
 
       <div className="final-content">
@@ -77,6 +80,45 @@ export default function FinalShowcase({ data }) {
         .final-showcase {
           position: relative;
           overflow: hidden;
+        }
+
+        .bg-decor {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          z-index: 0;
+          overflow: hidden;
+        }
+
+        .decor-img {
+          position: absolute;
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          opacity: 0.15;
+          mix-blend-mode: multiply;
+          border-radius: 50%;
+          filter: grayscale(0.1) contrast(1.1);
+        }
+
+        [data-theme='dark'] .decor-img {
+          mix-blend-mode: screen;
+          filter: grayscale(0.1) contrast(1.1) invert(0.85);
+          opacity: 0.12;
+        }
+
+        .decor-3 {
+          width: 400px;
+          height: 400px;
+          top: 100px;
+          left: -150px;
+          background-image: url('/assets/images/decor3.jpg');
+          animation: floatDecor3 30s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatDecor3 {
+          0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+          100% { transform: translate(50px, -30px) rotate(20deg) scale(1.1); }
         }
 
         .final-border {

@@ -17,10 +17,10 @@ export default function Hero({ brand }) {
         <div className="hero-circle hero-circle-2" />
         <div className="hero-circle hero-circle-3" />
         
-        {/* Decorative Indian Motifs from uploaded sprite */}
-        <div className="motif motif-parrot" />
-        <div className="motif motif-peacock" />
-        <div className="motif motif-elephant" />
+        {/* Decorative Indian Motifs from user uploads */}
+        <div className="motif motif-1" />
+        <div className="motif motif-2" />
+        <div className="motif motif-3" />
 
         {/* Decorative botanical SVG border */}
         <svg className="hero-border-left" width="60" height="400" viewBox="0 0 60 400" fill="none">
@@ -245,50 +245,49 @@ export default function Hero({ brand }) {
         /* ── Floating Indian Motifs ── */
         .motif {
           position: absolute;
-          width: 200px;
-          height: 200px;
-          background-image: url('/assets/images/indian-motifs.png');
-          background-size: 300% auto;
+          background-size: cover;
+          background-position: center;
           background-repeat: no-repeat;
           
-          /* Force beige background to pure white, keep lines black */
-          filter: grayscale(1) contrast(3) brightness(1.3);
           mix-blend-mode: multiply;
-          opacity: 0.12; /* Subtle watermark */
+          opacity: 0.2; /* Slightly more visible */
           z-index: 0;
           pointer-events: none;
+          border-radius: 50%;
+          filter: grayscale(0.1) contrast(1.1);
         }
 
         [data-theme='dark'] .motif {
-          /* Invert to make lines white, background black, then screen */
-          filter: grayscale(1) contrast(3) brightness(1.3) invert(1);
           mix-blend-mode: screen;
-          opacity: 0.12;
+          filter: grayscale(0.1) contrast(1.1) invert(0.85);
+          opacity: 0.15;
         }
 
-        .motif-parrot {
-          background-position: left center;
+        .motif-1 {
+          background-image: url('/assets/images/decor1.jpg');
           bottom: 10%;
-          right: 8%;
-          animation: motifFloat 12s ease-in-out infinite alternate;
-        }
-
-        .motif-peacock {
-          background-position: center center;
-          top: 15%;
-          left: 10%;
-          width: 180px;
-          height: 180px;
-          animation: motifFloat 15s ease-in-out infinite alternate-reverse;
-        }
-
-        .motif-elephant {
-          background-position: right center;
-          bottom: 12%;
           left: 8%;
-          width: 220px;
-          height: 220px;
-          animation: motifFloat 18s ease-in-out infinite alternate;
+          width: 350px;
+          height: 350px;
+          animation: motifFloat 15s ease-in-out infinite alternate;
+        }
+
+        .motif-2 {
+          background-image: url('/assets/images/decor2.jpg');
+          top: 15%;
+          left: 5%;
+          width: 300px;
+          height: 300px;
+          animation: motifFloat 20s ease-in-out infinite alternate-reverse;
+        }
+
+        .motif-3 {
+          background-image: url('/assets/images/decor3.jpg');
+          bottom: 5%;
+          right: 35%;
+          width: 400px;
+          height: 400px;
+          animation: motifFloat 25s ease-in-out infinite alternate;
         }
 
         @keyframes motifFloat {

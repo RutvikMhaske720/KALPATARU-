@@ -10,6 +10,9 @@ export default function GovernmentSchemes({ data }) {
 
   return (
     <section className="gov-schemes section" id="schemes" aria-label="Government Schemes">
+      <div className="bg-decor" aria-hidden="true">
+        <div className="decor-img decor-2" />
+      </div>
       {/* Decorative border */}
       <div className="gov-border-top" aria-hidden="true" />
 
@@ -70,6 +73,45 @@ export default function GovernmentSchemes({ data }) {
       <style>{`
         .gov-schemes {
           position: relative;
+        }
+
+        .bg-decor {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          z-index: 0;
+          overflow: hidden;
+        }
+
+        .decor-img {
+          position: absolute;
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          opacity: 0.15;
+          mix-blend-mode: multiply;
+          border-radius: 50%;
+          filter: grayscale(0.2) contrast(1.2);
+        }
+
+        [data-theme='dark'] .decor-img {
+          mix-blend-mode: screen;
+          filter: grayscale(0.2) contrast(1.2) invert(0.8);
+          opacity: 0.12;
+        }
+
+        .decor-2 {
+          width: 500px;
+          height: 500px;
+          bottom: -150px;
+          right: -200px;
+          background-image: url('/assets/images/decor4.jpg');
+          animation: floatDecor2 28s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes floatDecor2 {
+          0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+          100% { transform: translate(-40px, -40px) rotate(-15deg) scale(1.05); }
         }
 
         .gov-border-top {
