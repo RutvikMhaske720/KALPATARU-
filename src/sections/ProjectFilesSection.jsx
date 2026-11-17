@@ -1,21 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FileCode, FileText, Download, Copy, Check, Eye, ExternalLink } from 'lucide-react';
 import { mainCppSource } from '../data/mainCppCode';
 
 export default function ProjectFilesSection({ onOpenFileModal }) {
   const [copiedCpp, setCopiedCpp] = useState(false);
+  const [cppCode, setCppCode] = useState(mainCppSource);
 
-  const cppLinesCount = mainCppSource ? mainCppSource.split('\n').length : 1916;
-  const cppSizeKb = mainCppSource ? (new Blob([mainCppSource]).size / 1024).toFixed(1) : '30.7';
+  useEffect(() => {
+    fetch(`/main.cpp?t=${Date.now()}`)
+      .then((res) => (res.ok ? res.text() : null))
+      .then((text) => {
+        if (text && text.trim().length > 0) setCppCode(text);
+      })
+      .catch(() => {});
+  }, []);
+
+  const cppLinesCount = cppCode ? cppCode.split('\n').length : 1951;
+  const cppSizeKb = cppCode ? (new Blob([cppCode]).size / 1024).toFixed(1) : '32.3';
 
   const handleCopyCpp = async () => {
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(mainCppSource);
+        await navigator.clipboard.writeText(cppCode);
       } else {
         const textarea = document.createElement('textarea');
-        textarea.value = mainCppSource;
+        textarea.value = cppCode;
         textarea.style.position = 'fixed';
         textarea.style.opacity = '0';
         document.body.appendChild(textarea);

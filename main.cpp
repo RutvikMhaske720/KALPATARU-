@@ -1,4 +1,5 @@
 //1st
+1
 
 
 #include<iostream>
@@ -140,6 +141,11 @@ int main()
 
 
 // // //2nd
+2
+
+
+
+
 
 #include<iostream>
 using namespace std;
@@ -259,6 +265,12 @@ int main()
 
 
 //3rd
+3
+
+
+
+
+
 #include<iostream>
 using namespace std;
 
@@ -404,6 +416,13 @@ int main()
 
 
 //4th
+4
+
+
+
+
+
+
 #include<iostream>
 using namespace std;
 
@@ -554,6 +573,13 @@ int main()
 
 
 //5th
+5
+
+
+
+
+
+
 #include<iostream>
 using namespace std;
 
@@ -924,12 +950,14 @@ int main()
 
 
 
-
-
-
-
-
 // //6th
+6
+
+
+
+
+
+
 #include<iostream>
 using namespace std;
 
@@ -1026,7 +1054,17 @@ int main()
 
 
 
+
+
+
+
 //7th
+7
+
+
+
+
+
 #include <iostream>
 using namespace std;
 
@@ -1077,8 +1115,524 @@ int main()
 
 
 
+
+
+
+
+//8th
+8
+
+
+
+
+
+#include<iostream>
+using namespace std;
+
+class PriorityQueue
+{
+    int id[10], priority[10], n;
+
+public:
+
+    PriorityQueue()
+    {
+        n = 0;
+    }
+
+    void enqueue(int x, int p)
+    {
+        if(n == 10)
+            cout<<"Queue Overflow"<<endl;
+        else if(p < 1 || p > 3)
+            cout<<"Invalid Priority"<<endl;
+        else
+        {
+            int i = n-1;
+
+            while(i >= 0 && priority[i] > p)
+            {
+                id[i+1] = id[i];
+                priority[i+1] = priority[i];
+                i--;
+            }
+
+            id[i+1] = x;
+            priority[i+1] = p;
+            n++;
+
+            cout<<"Patient Added Successfully"<<endl;
+        }
+    }
+
+    void dequeue()
+    {
+        if(n == 0)
+            cout<<"Queue Underflow"<<endl;
+        else
+        {
+            cout<<"Treated Patient: "<<id[0]<<endl;
+
+            for(int i=0; i<n-1; i++)
+            {
+                id[i] = id[i+1];
+                priority[i] = priority[i+1];
+            }
+
+            n--;
+        }
+    }
+
+    void peek()
+    {
+        if(n == 0)
+            cout<<"Queue is Empty"<<endl;
+        else
+            cout<<"Next Patient: "<<id[0]<<endl;
+    }
+
+    void display()
+    {
+        if(n == 0)
+            cout<<"Queue is Empty"<<endl;
+        else
+        {
+            cout<<"Patient ID\tPriority"<<endl;
+
+            for(int i=0; i<n; i++)
+                cout<<id[i]<<"\t\t"<<priority[i]<<endl;
+        }
+    }
+};
+
+int main()
+{
+    PriorityQueue q;
+    int ch, id, p;
+
+    do
+    {
+        cout<<"\n1. Enqueue";
+        cout<<"\n2. Dequeue";
+        cout<<"\n3. Peek";
+        cout<<"\n4. Display";
+        cout<<"\n5. Exit";
+
+        cout<<"\nEnter Choice: ";
+        cin>>ch;
+
+        switch(ch)
+        {
+            case 1:
+                cout<<"Enter Patient ID: ";
+                cin>>id;
+
+                cout<<"Enter Priority (1-3): ";
+                cin>>p;
+
+                q.enqueue(id,p);
+                break;
+
+            case 2:
+                q.dequeue();
+                break;
+
+            case 3:
+                q.peek();
+                break;
+
+            case 4:
+                q.display();
+                break;
+
+            case 5:
+                cout<<"Program Ended";
+                break;
+
+            default:
+                cout<<"Invalid Choice";
+        }
+
+    }while(ch != 5);
+
+    return 0;
+}
+
+
+
+
+
+
+
+//9th
+9
+
+
+
+
+
+
+#include<iostream>
+using namespace std;
+
+class Scheduling
+{
+    int pid[50], at[50], bt[50];
+    int ct[50], tat[50], wt[50];
+    int n;
+
+public:
+
+    Scheduling()
+    {
+        n = 0;
+    }
+
+    void input()
+    {
+        cout<<"Enter number of processes: ";
+        cin>>n;
+
+        if(n <= 0 || n > 50)
+        {
+            cout<<"Invalid number of processes"<<endl;
+            n = 0;
+            return;
+        }
+
+        for(int i=0; i<n; i++)
+        {
+            pid[i] = i+1;
+
+            cout<<"Enter Arrival Time of P"<<pid[i]<<": ";
+            cin>>at[i];
+
+            cout<<"Enter Burst Time of P"<<pid[i]<<": ";
+            cin>>bt[i];
+        }
+    }
+
+    void display(string title)
+    {
+        float totalWT = 0, totalTAT = 0;
+
+        cout<<"\n"<<title<<endl;
+
+        cout<<"\nPID\tAT\tBT\tCT\tTAT\tWT\n";
+
+        for(int i=0; i<n; i++)
+        {
+            cout<<"P"<<pid[i]<<"\t"
+                <<at[i]<<"\t"
+                <<bt[i]<<"\t"
+                <<ct[i]<<"\t"
+                <<tat[i]<<"\t"
+                <<wt[i]<<endl;
+
+            totalWT += wt[i];
+            totalTAT += tat[i];
+        }
+
+        cout<<"\nAverage Waiting Time: "
+            <<totalWT/n;
+
+        cout<<"\nAverage Turnaround Time: "
+            <<totalTAT/n<<endl;
+    }
+
+    void fcfs()
+    {
+        int time = 0;
+
+        for(int i=0; i<n; i++)
+        {
+            if(time < at[i])
+                time = at[i];
+
+            time = time + bt[i];
+
+            ct[i] = time;
+            tat[i] = ct[i] - at[i];
+            wt[i] = tat[i] - bt[i];
+        }
+
+        display("FCFS NON-PREEMPTIVE SCHEDULING");
+    }
+
+    void sjf()
+    {
+        int completed[50] = {0};
+        int time = 0;
+        int count = 0;
+
+        while(count < n)
+        {
+            int minBT = 9999;
+            int pos = -1;
+
+            for(int i=0; i<n; i++)
+            {
+                if(completed[i] == 0 && at[i] <= time)
+                {
+                    if(bt[i] < minBT)
+                    {
+                        minBT = bt[i];
+                        pos = i;
+                    }
+                }
+            }
+
+            if(pos == -1)
+            {
+                time++;
+                continue;
+            }
+
+            time = time + bt[pos];
+
+            ct[pos] = time;
+            tat[pos] = ct[pos] - at[pos];
+            wt[pos] = tat[pos] - bt[pos];
+
+            completed[pos] = 1;
+            count++;
+        }
+
+        display("SJF NON-PREEMPTIVE SCHEDULING");
+    }
+};
+
+int main()
+{
+    Scheduling s;
+
+    s.input();
+
+    if(s.n == 0)
+        return 0;
+
+    s.fcfs();
+    s.sjf();
+
+    return 0;
+}
+
+
+
+
+
+
+
+//10th
+10
+palindrome
+
+
+
+
+
+
+#include<iostream>
+#include<string>
+using namespace std;
+
+class Deque
+{
+    char a[100];
+    int front, rear;
+
+public:
+
+    Deque()
+    {
+        front = -1;
+        rear = -1;
+    }
+
+    void insertRear(char x)
+    {
+        if(rear == 99)
+            cout<<"Deque Overflow";
+        else
+        {
+            if(front == -1)
+                front = 0;
+
+            a[++rear] = x;
+        }
+    }
+
+    bool checkPalindrome(string s)
+    {
+        if(s.length() > 100)
+            return false;
+
+        for(int i=0; i<s.length(); i++)
+        {
+            insertRear(s[i]);
+        }
+
+        while(front < rear)
+        {
+            if(a[front] != a[rear])
+                return false;
+            else
+            {
+                front++;
+                rear--;
+            }
+        }
+
+        return true;
+    }
+};
+
+int main()
+{
+    Deque d;
+    string s;
+
+    cout<<"Enter a string: ";
+    cin>>s;
+
+    if(d.checkPalindrome(s))
+        cout<<"String is Palindrome";
+    else
+        cout<<"String is Not Palindrome";
+
+    return 0;
+}
+
+
+
+
+
+
+
+// // //11
+11
+
+
+
+
+
+
+#include<iostream>
+using namespace std;
+
+string name[50];
+string mob[50];
+int n;
+
+void Insert(string key,string moB){
+    int i=n-1;
+    while(i>=0 && name[i]>key){
+        name[i+1]=name[i];
+        mob[i+1]=mob[i];
+        i--;
+    }
+    name[i+1]=key;
+    mob[i+1]=moB;
+    n++;
+
+};
+int Search(string key){
+
+    if(n==0){
+        return -1;
+    }
+
+    else{
+        string last=name[n-1];
+        name[n-1]=key;
+        int i=0;
+
+        while(name[i]!=key){
+            i++;
+        }
+
+        name[n-1]=last;
+
+        if(i<n-1 || last==key){
+            return i;
+        }
+        else{
+            return -1;
+        }
+    }
+
+
+};
+void Display(){
+
+    if(n==0){
+        cout <<"Empty";
+    }
+    for(int i=0;i<n;i++){
+        cout <<name[i]<<"   "<<mob[i];
+    }
+
+};
+int main(){
+
+    int count;
+    string k,m;
+    cout <<"Enter No. Of Friends :- ";
+    cin >>count;
+
+    for(int i=0;i<count;i++){
+        cout <<"Enter Name Of Friend :-";
+        cin >>k;
+
+        int pos=Search(k);
+        if(pos==-1){
+            cout <<"Enter Mobile No. Of Friend :-";
+            cin >>m;
+
+            Insert(k,m);
+
+        }
+        else{
+            cout<< "Friend Is Already Present";
+        }
+    }
+
+    string searchkey;
+    cout <<"Enter Search Key :-";
+    cin >>searchkey;
+
+    int pos1=Search(searchkey);
+        if(pos1==-1){
+            cout <<"Enter Name Of Friend :-";
+            cin >>k;
+            cout <<"Enter Mobile No. Of Friend :-";
+            cin >>m;
+
+            Insert(searchkey,m);
+
+        }
+        else{
+            cout<< "Friend Is Already Present";
+            cout <<"Mobile No. Of Friend :-"<<mob[pos1];
+        }
+return 0;
+    }
+
+
+
+
+
+
 //12th
+12
 merge
+
+
+
+
+
+
+
 
 #include<iostream>
 using namespace std;
@@ -1290,7 +1844,17 @@ int main()
 
 
 
+
+
+
 //14th
+14
+
+
+
+
+
+
 #include<iostream>
 using namespace std;
 
@@ -1379,544 +1943,6 @@ int main()
 
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-//9th
-#include<iostream>
-using namespace std;
-
-class Scheduling
-{
-    int pid[50], at[50], bt[50];
-    int ct[50], tat[50], wt[50];
-    int n;
-
-public:
-
-    Scheduling()
-    {
-        n = 0;
-    }
-
-    void input()
-    {
-        cout<<"Enter number of processes: ";
-        cin>>n;
-
-        if(n <= 0 || n > 50)
-        {
-            cout<<"Invalid number of processes"<<endl;
-            n = 0;
-            return;
-        }
-
-        for(int i=0; i<n; i++)
-        {
-            pid[i] = i+1;
-
-            cout<<"Enter Arrival Time of P"<<pid[i]<<": ";
-            cin>>at[i];
-
-            cout<<"Enter Burst Time of P"<<pid[i]<<": ";
-            cin>>bt[i];
-        }
-    }
-
-    void display(string title)
-    {
-        float totalWT = 0, totalTAT = 0;
-
-        cout<<"\n"<<title<<endl;
-
-        cout<<"\nPID\tAT\tBT\tCT\tTAT\tWT\n";
-
-        for(int i=0; i<n; i++)
-        {
-            cout<<"P"<<pid[i]<<"\t"
-                <<at[i]<<"\t"
-                <<bt[i]<<"\t"
-                <<ct[i]<<"\t"
-                <<tat[i]<<"\t"
-                <<wt[i]<<endl;
-
-            totalWT += wt[i];
-            totalTAT += tat[i];
-        }
-
-        cout<<"\nAverage Waiting Time: "
-            <<totalWT/n;
-
-        cout<<"\nAverage Turnaround Time: "
-            <<totalTAT/n<<endl;
-    }
-
-    void fcfs()
-    {
-        int time = 0;
-
-        for(int i=0; i<n; i++)
-        {
-            if(time < at[i])
-                time = at[i];
-
-            time = time + bt[i];
-
-            ct[i] = time;
-            tat[i] = ct[i] - at[i];
-            wt[i] = tat[i] - bt[i];
-        }
-
-        display("FCFS NON-PREEMPTIVE SCHEDULING");
-    }
-
-    void sjf()
-    {
-        int completed[50] = {0};
-        int time = 0;
-        int count = 0;
-
-        while(count < n)
-        {
-            int minBT = 9999;
-            int pos = -1;
-
-            for(int i=0; i<n; i++)
-            {
-                if(completed[i] == 0 && at[i] <= time)
-                {
-                    if(bt[i] < minBT)
-                    {
-                        minBT = bt[i];
-                        pos = i;
-                    }
-                }
-            }
-
-            if(pos == -1)
-            {
-                time++;
-                continue;
-            }
-
-            time = time + bt[pos];
-
-            ct[pos] = time;
-            tat[pos] = ct[pos] - at[pos];
-            wt[pos] = tat[pos] - bt[pos];
-
-            completed[pos] = 1;
-            count++;
-        }
-
-        display("SJF NON-PREEMPTIVE SCHEDULING");
-    }
-};
-
-int main()
-{
-    Scheduling s;
-
-    s.input();
-
-    if(s.n == 0)
-        return 0;
-
-    s.fcfs();
-    s.sjf();
-
-    return 0;
-}
-
-
-
-
-
-
-
-//8th
-
-#include<iostream>
-using namespace std;
-
-class PriorityQueue
-{
-    int id[10], priority[10], n;
-
-public:
-
-    PriorityQueue()
-    {
-        n = 0;
-    }
-
-    void enqueue(int x, int p)
-    {
-        if(n == 10)
-            cout<<"Queue Overflow"<<endl;
-        else if(p < 1 || p > 3)
-            cout<<"Invalid Priority"<<endl;
-        else
-        {
-            int i = n-1;
-
-            while(i >= 0 && priority[i] > p)
-            {
-                id[i+1] = id[i];
-                priority[i+1] = priority[i];
-                i--;
-            }
-
-            id[i+1] = x;
-            priority[i+1] = p;
-            n++;
-
-            cout<<"Patient Added Successfully"<<endl;
-        }
-    }
-
-    void dequeue()
-    {
-        if(n == 0)
-            cout<<"Queue Underflow"<<endl;
-        else
-        {
-            cout<<"Treated Patient: "<<id[0]<<endl;
-
-            for(int i=0; i<n-1; i++)
-            {
-                id[i] = id[i+1];
-                priority[i] = priority[i+1];
-            }
-
-            n--;
-        }
-    }
-
-    void peek()
-    {
-        if(n == 0)
-            cout<<"Queue is Empty"<<endl;
-        else
-            cout<<"Next Patient: "<<id[0]<<endl;
-    }
-
-    void display()
-    {
-        if(n == 0)
-            cout<<"Queue is Empty"<<endl;
-        else
-        {
-            cout<<"Patient ID\tPriority"<<endl;
-
-            for(int i=0; i<n; i++)
-                cout<<id[i]<<"\t\t"<<priority[i]<<endl;
-        }
-    }
-};
-
-int main()
-{
-    PriorityQueue q;
-    int ch, id, p;
-
-    do
-    {
-        cout<<"\n1. Enqueue";
-        cout<<"\n2. Dequeue";
-        cout<<"\n3. Peek";
-        cout<<"\n4. Display";
-        cout<<"\n5. Exit";
-
-        cout<<"\nEnter Choice: ";
-        cin>>ch;
-
-        switch(ch)
-        {
-            case 1:
-                cout<<"Enter Patient ID: ";
-                cin>>id;
-
-                cout<<"Enter Priority (1-3): ";
-                cin>>p;
-
-                q.enqueue(id,p);
-                break;
-
-            case 2:
-                q.dequeue();
-                break;
-
-            case 3:
-                q.peek();
-                break;
-
-            case 4:
-                q.display();
-                break;
-
-            case 5:
-                cout<<"Program Ended";
-                break;
-
-            default:
-                cout<<"Invalid Choice";
-        }
-
-    }while(ch != 5);
-
-    return 0;
-}
-
-
-
-
-
-//10th
-palindrome
-
-
-
-
-
-#include<iostream>
-#include<string>
-using namespace std;
-
-class Deque
-{
-    char a[100];
-    int front, rear;
-
-public:
-
-    Deque()
-    {
-        front = -1;
-        rear = -1;
-    }
-
-    void insertRear(char x)
-    {
-        if(rear == 99)
-            cout<<"Deque Overflow";
-        else
-        {
-            if(front == -1)
-                front = 0;
-
-            a[++rear] = x;
-        }
-    }
-
-    bool checkPalindrome(string s)
-    {
-        if(s.length() > 100)
-            return false;
-
-        for(int i=0; i<s.length(); i++)
-        {
-            insertRear(s[i]);
-        }
-
-        while(front < rear)
-        {
-            if(a[front] != a[rear])
-                return false;
-            else
-            {
-                front++;
-                rear--;
-            }
-        }
-
-        return true;
-    }
-};
-
-int main()
-{
-    Deque d;
-    string s;
-
-    cout<<"Enter a string: ";
-    cin>>s;
-
-    if(d.checkPalindrome(s))
-        cout<<"String is Palindrome";
-    else
-        cout<<"String is Not Palindrome";
-
-    return 0;
-}
-
-
-
-
-
-
-
-#11
-#include<iostream>
-#include<string>
-using namespace std;
-class phonebook
-{
-string name[51], mobile[51];
-int n;
-public:
-phonebook()
-{
-n = 0;
-for(int i = 0; i < 51; i++)
-{
-name[i] = "";
-mobile[i] = "";
-}
-}
-bool validMobile(string m)
-{
-if(m.length() != 10)
-return false;
-for(int i = 0; i < m.length(); i++)
-{
-if(m[i] < '0' || m[i] > '9')
-return false;
-}
-return true;
-}
-int sentinelSearch(string key)
-{
-name[n] = key;
-int i = 0;
-while(name[i] != key)
-i++;
-if(i < n)
-return i;
-return -1;
-}
-bool insertSorted(string nm, string mob)
-{
-if(n == 50)
-{
-cout<<"Phone book is full"<<endl;
-return false;
-}
-int i = n-1;
-while(i >= 0 && name[i] > nm)
-{
-name[i+1] = name[i];
-mobile[i+1] = mobile[i];
-i--;
-}
-name[i+1] = nm;
-mobile[i+1] = mob;
-n++;
-return true;
-}
-void addFriend()
-{
-string nm, mob;
-cout<<"Enter friend name :";
-cin>>nm;
-if(sentinelSearch(nm) != -1)
-{
-cout<<"Friend already exists"<<endl;
-return;
-}
-cout<<"Enter 10 digit mobile number :";
-cin>>mob;
-if(!validMobile(mob))
-{
-cout<<"Invalid mobile number"<<endl;
-return;
-}
-if(insertSorted(nm, mob))
-cout<<"Friend added successfully"<<endl;
-}
-void searchFriend()
-{
-string nm, mob;
-cout<<"Enter name to search :";
-cin>>nm;
-int pos = sentinelSearch(nm);
-if(pos != -1)
-{
-cout<<"Friend found"<<endl;
-cout<<"Name :"<<name[pos]<<endl;
-cout<<"Mobile :"<<mobile[pos]<<endl;
-}
-else
-{
-cout<<"Friend not found. Insert into phone book."<<endl;
-cout<<"Enter 10 digit mobile number :";
-cin>>mob;
-if(!validMobile(mob))
-{
-cout<<"Invalid mobile number"<<endl;
-return;
-}
-if(insertSorted(nm, mob))
-cout<<"Friend inserted successfully"<<endl;
-}
-}
-void display()
-{
-if(n == 0)
-{
-cout<<"Phone book is empty"<<endl;
-return;
-}
-cout<<"\nNo.\tName\tMobile"<<endl;
-for(int i = 0; i < n; i++)
-{
-cout<<i+1<<"\t";
-cout<<name[i]<<"\t";
-cout<<mobile[i]<<endl;
-}
-}
-};
-int main()
-{
-phonebook p;
-int choice;
-do
-{
-cout<<"\n1. Add Friend";
-cout<<"\n2. Search Friend";
-cout<<"\n3. Display Phone Book";
-cout<<"\n4. Exit"<<endl;
-cout<<"Enter your choice :";
-cin>>choice;
-switch(choice)
-{
-case 1:
-p.addFriend();
-break;
-case 2:
-p.searchFriend();
-break;
-case 3:
-p.display();
-break;
-case 4:
-break;
-default:
-cout<<"Invalid choice"<<endl;
-}
-}while(choice != 4);
-return 0;
-}
-
 
 
 
