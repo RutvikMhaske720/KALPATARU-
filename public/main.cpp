@@ -1948,3 +1948,27 @@ int main()
 
 
 
+1. Implement a program for left rotation and right rotation of array by a given number k.
+2. Implementa program for addition and multiplication of two matrices using concepts of 2-D arrays.
+3. Implementa program for addition of two polynomials using concepts of linked list.
+4. Implementa program for merging a doubly linked list into another doubly linked list at alternate
+positionsand sorting the resultant doubly linked list.
+5. Implement railway reservation system using a circular linked list.
+6. Implement 8 Queens problem using stack.
+7. Implement Tower of Hanoi problem using concept of recursion.
+8. Implement basic operations of priority queue for managing the appointments of patients at a hospital.
+9. Implement FCFS and SJF scheduling in non-preemptive mode using suitable queue.
+10. Implement a program to check whether the given string is palindrome or not using doubly ended
+queue.
+11. Implement a program to store names and mobile numbers of your friends in sorted order on names.
+Search your friend from list using Sentinel search. Insert friend if not present in phone book.
+12. Implementa program to store percentage of second year students in array. Write a function for
+sorting array offloating point numbers in ascending order using Merge Sort.
+13. Scores of batsman in twelve overs needs to be stored in a table using hash function hash (key) =
+key mod overs where key is the data to be inserted into the Hash table. Write a C++ program to
+implement hash table for collision handling using separate chaining with replacement using linked list
+for the following data :- 10, 5,4,14,15,20,1,11,6,16,36,28.
+14. Vinay hasa medical shop and he wants to store information of medical stock available in a table
+using hash function hash (key) = key mod 9 where key is the data to be inserted into the Hash table.
+Write a C++ program to implement hash table for collision handling using linear probing without
+changing with replacement.
