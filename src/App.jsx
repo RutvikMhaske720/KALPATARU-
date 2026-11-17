@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import content from './data/content.json';
 
 // Components
 import FloatingNav from './components/FloatingNav';
 import CulturalMotifs from './components/CulturalMotifs';
 import VideoSection from './components/VideoSection';
+import FileViewerModal from './components/FileViewerModal';
 
 // Sections
 import Hero from './sections/Hero';
@@ -11,6 +13,7 @@ import AppJourney from './sections/AppJourney';
 import GovernmentSchemes from './sections/GovernmentSchemes';
 import OfflineExhibition from './sections/OfflineExhibition';
 import FinalShowcase from './sections/FinalShowcase';
+import ProjectFilesSection from './sections/ProjectFilesSection';
 import Footer from './sections/Footer';
 
 /**
@@ -18,6 +21,14 @@ import Footer from './sections/Footer';
  * Orchestrates all sections into a cohesive immersive story
  */
 export default function App() {
+  const [fileModalOpen, setFileModalOpen] = useState(false);
+  const [fileModalTab, setFileModalTab] = useState('cpp');
+
+  const openFileModal = (tab = 'cpp') => {
+    setFileModalTab(tab);
+    setFileModalOpen(true);
+  };
+
   return (
     <div className="app" id="app">
       {/* Grain overlay for textured premium feel */}
@@ -30,7 +41,7 @@ export default function App() {
       <FloatingNav items={content.navigation} />
 
       {/* 1. Hero / Opening Experience */}
-      <Hero brand={content.brand} />
+      <Hero brand={content.brand} onOpenFileModal={openFileModal} />
 
       {/* 2. Cinematic Video Section */}
       <div style={{ position: 'relative', zIndex: 2 }}>
@@ -52,8 +63,18 @@ export default function App() {
       {/* 6. Final Showcase — Screen 13 */}
       <FinalShowcase data={content.finalScreen} />
 
-      {/* 7. Footer */}
+      {/* 7. Project Documentation & Source Files (main.cpp & MTP.pdf) */}
+      <ProjectFilesSection onOpenFileModal={openFileModal} />
+
+      {/* 8. Footer */}
       <Footer />
+
+      {/* Modal File Viewer (Inspect main.cpp & MTP.pdf in window + Copy Code option) */}
+      <FileViewerModal
+        isOpen={fileModalOpen}
+        onClose={() => setFileModalOpen(false)}
+        initialTab={fileModalTab}
+      />
     </div>
   );
 }

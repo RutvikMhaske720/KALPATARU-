@@ -111,6 +111,10 @@
     {
       "id": "exhibition",
       "label": "Exhibition"
+    },
+    {
+      "id": "project-files",
+      "label": "Files & Code"
     }
   ]
 }

@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FileCode, FileText, Download, Eye } from 'lucide-react';
 import KalpataruLogo from '../components/KalpataruLogo';
 
 /**
  * Hero — Cinematic opening experience
  * "WELCOME TO KALPATARU" with large typography, cultural motifs, ambient animation
  */
-export default function Hero({ brand }) {
+export default function Hero({ brand, onOpenFileModal }) {
   const [isPdfOpen, setIsPdfOpen] = useState(false);
 
   return (
@@ -127,6 +128,74 @@ export default function Hero({ brand }) {
           >
             View Presentation (PDF)
           </motion.button>
+
+          {/* Project Files (main.cpp & MTP.pdf) Action Hub */}
+          <motion.div
+            className="hero-files-hub"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.8 }}
+          >
+            <div className="files-hub-header">
+              <span className="files-hub-label">Project Files &amp; Documentation</span>
+            </div>
+
+            <div className="files-hub-items">
+              {/* main.cpp item */}
+              <div className="hub-file-row">
+                <div className="hub-file-badge cpp">
+                  <FileCode size={15} />
+                  <span className="hub-filename">main.cpp</span>
+                </div>
+                <div className="hub-btn-group">
+                  <a
+                    href="/main.cpp"
+                    download="main.cpp"
+                    className="hub-dl-btn"
+                    title="Download main.cpp"
+                  >
+                    <Download size={13} />
+                    <span>Download</span>
+                  </a>
+                  <button
+                    className="hub-view-btn"
+                    onClick={() => onOpenFileModal && onOpenFileModal('cpp')}
+                    title="View main.cpp in window & copy code"
+                  >
+                    <Eye size={13} />
+                    <span>View &amp; Copy</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* MTP.pdf item */}
+              <div className="hub-file-row">
+                <div className="hub-file-badge pdf">
+                  <FileText size={15} />
+                  <span className="hub-filename">MTP.pdf</span>
+                </div>
+                <div className="hub-btn-group">
+                  <a
+                    href="/MTP.pdf"
+                    download="MTP.pdf"
+                    className="hub-dl-btn"
+                    title="Download MTP.pdf"
+                  >
+                    <Download size={13} />
+                    <span>Download</span>
+                  </a>
+                  <button
+                    className="hub-view-btn"
+                    onClick={() => onOpenFileModal && onOpenFileModal('pdf')}
+                    title="View MTP.pdf in window"
+                  >
+                    <Eye size={13} />
+                    <span>View</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
 
@@ -444,6 +513,142 @@ export default function Hero({ brand }) {
           transform: translateY(-2px);
           background: rgba(212, 175, 55, 0.15);
           box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .hero-files-hub {
+          width: 100%;
+          max-width: 380px;
+          margin-top: 0.5rem;
+          padding: 1rem 1.2rem;
+          background: rgba(212, 175, 55, 0.04);
+          border: 1px solid rgba(212, 175, 55, 0.25);
+          border-radius: var(--radius-lg);
+          backdrop-filter: blur(8px);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+          transition: all 0.3s ease;
+        }
+
+        .hero-files-hub:hover {
+          border-color: rgba(212, 175, 55, 0.5);
+          box-shadow: 0 6px 25px rgba(212, 175, 55, 0.12);
+        }
+
+        .files-hub-header {
+          text-align: center;
+          margin-bottom: 0.75rem;
+          padding-bottom: 0.4rem;
+          border-bottom: 1px dashed rgba(212, 175, 55, 0.2);
+        }
+
+        .files-hub-label {
+          font-family: var(--font-body);
+          font-size: 0.75rem;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--gold-dark);
+        }
+
+        [data-theme='dark'] .files-hub-label {
+          color: var(--gold);
+        }
+
+        .files-hub-items {
+          display: flex;
+          flex-direction: column;
+          gap: 0.65rem;
+        }
+
+        .hub-file-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 0.75rem;
+          padding: 0.4rem 0.6rem;
+          background: rgba(255, 255, 255, 0.4);
+          border-radius: 8px;
+          border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        [data-theme='dark'] .hub-file-row {
+          background: rgba(0, 0, 0, 0.25);
+          border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .hub-file-badge {
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+        }
+
+        .hub-file-badge.cpp {
+          color: #2563EB;
+        }
+
+        [data-theme='dark'] .hub-file-badge.cpp {
+          color: #60A5FA;
+        }
+
+        .hub-file-badge.pdf {
+          color: #DC2626;
+        }
+
+        [data-theme='dark'] .hub-file-badge.pdf {
+          color: #F87171;
+        }
+
+        .hub-filename {
+          font-family: var(--font-body);
+          font-size: 0.82rem;
+          font-weight: 600;
+          color: var(--text-primary);
+        }
+
+        .hub-btn-group {
+          display: flex;
+          align-items: center;
+          gap: 0.35rem;
+        }
+
+        .hub-dl-btn,
+        .hub-view-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.25rem;
+          padding: 0.3rem 0.65rem;
+          border-radius: 14px;
+          font-family: var(--font-body);
+          font-size: 0.75rem;
+          font-weight: 600;
+          text-decoration: none;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .hub-dl-btn {
+          background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+          color: #0D2818;
+          border: none;
+        }
+
+        .hub-dl-btn:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 2px 8px rgba(212, 175, 55, 0.35);
+        }
+
+        .hub-view-btn {
+          background: transparent;
+          color: var(--gold-dark);
+          border: 1px solid var(--gold);
+        }
+
+        [data-theme='dark'] .hub-view-btn {
+          color: var(--gold);
+        }
+
+        .hub-view-btn:hover {
+          background: rgba(212, 175, 55, 0.15);
+          transform: translateY(-1px);
         }
 
         .pdf-modal-backdrop {
