@@ -4,7 +4,6 @@ import content from './data/content.json';
 // Components
 import FloatingNav from './components/FloatingNav';
 import CulturalMotifs from './components/CulturalMotifs';
-import VideoSection from './components/VideoSection';
 import FileViewerModal from './components/FileViewerModal';
 
 // Sections
@@ -43,12 +42,7 @@ export default function App() {
       {/* 1. Hero / Opening Experience */}
       <Hero brand={content.brand} onOpenFileModal={openFileModal} />
 
-      {/* 2. Cinematic Video Section */}
-      <div style={{ position: 'relative', zIndex: 2 }}>
-        <VideoSection videoConfig={content.video} />
-      </div>
-
-      {/* 3. App Journey — 10 screens with flow connectors */}
+      {/* 2. App Journey — 10 screens with flow connectors */}
       <AppJourney
         screens={content.appScreens}
         journey={content.journey}
