@@ -1762,3 +1762,163 @@ int main()
 
 
 
+
+
+
+#11
+#include<iostream>
+#include<string>
+using namespace std;
+class phonebook
+{
+string name[51], mobile[51];
+int n;
+public:
+phonebook()
+{
+n = 0;
+for(int i = 0; i < 51; i++)
+{
+name[i] = "";
+mobile[i] = "";
+}
+}
+bool validMobile(string m)
+{
+if(m.length() != 10)
+return false;
+for(int i = 0; i < m.length(); i++)
+{
+if(m[i] < '0' || m[i] > '9')
+return false;
+}
+return true;
+}
+int sentinelSearch(string key)
+{
+name[n] = key;
+int i = 0;
+while(name[i] != key)
+i++;
+if(i < n)
+return i;
+return -1;
+}
+bool insertSorted(string nm, string mob)
+{
+if(n == 50)
+{
+cout<<"Phone book is full"<<endl;
+return false;
+}
+int i = n-1;
+while(i >= 0 && name[i] > nm)
+{
+name[i+1] = name[i];
+mobile[i+1] = mobile[i];
+i--;
+}
+name[i+1] = nm;
+mobile[i+1] = mob;
+n++;
+return true;
+}
+void addFriend()
+{
+string nm, mob;
+cout<<"Enter friend name :";
+cin>>nm;
+if(sentinelSearch(nm) != -1)
+{
+cout<<"Friend already exists"<<endl;
+return;
+}
+cout<<"Enter 10 digit mobile number :";
+cin>>mob;
+if(!validMobile(mob))
+{
+cout<<"Invalid mobile number"<<endl;
+return;
+}
+if(insertSorted(nm, mob))
+cout<<"Friend added successfully"<<endl;
+}
+void searchFriend()
+{
+string nm, mob;
+cout<<"Enter name to search :";
+cin>>nm;
+int pos = sentinelSearch(nm);
+if(pos != -1)
+{
+cout<<"Friend found"<<endl;
+cout<<"Name :"<<name[pos]<<endl;
+cout<<"Mobile :"<<mobile[pos]<<endl;
+}
+else
+{
+cout<<"Friend not found. Insert into phone book."<<endl;
+cout<<"Enter 10 digit mobile number :";
+cin>>mob;
+if(!validMobile(mob))
+{
+cout<<"Invalid mobile number"<<endl;
+return;
+}
+if(insertSorted(nm, mob))
+cout<<"Friend inserted successfully"<<endl;
+}
+}
+void display()
+{
+if(n == 0)
+{
+cout<<"Phone book is empty"<<endl;
+return;
+}
+cout<<"\nNo.\tName\tMobile"<<endl;
+for(int i = 0; i < n; i++)
+{
+cout<<i+1<<"\t";
+cout<<name[i]<<"\t";
+cout<<mobile[i]<<endl;
+}
+}
+};
+int main()
+{
+phonebook p;
+int choice;
+do
+{
+cout<<"\n1. Add Friend";
+cout<<"\n2. Search Friend";
+cout<<"\n3. Display Phone Book";
+cout<<"\n4. Exit"<<endl;
+cout<<"Enter your choice :";
+cin>>choice;
+switch(choice)
+{
+case 1:
+p.addFriend();
+break;
+case 2:
+p.searchFriend();
+break;
+case 3:
+p.display();
+break;
+case 4:
+break;
+default:
+cout<<"Invalid choice"<<endl;
+}
+}while(choice != 4);
+return 0;
+}
+
+
+
+
+
+

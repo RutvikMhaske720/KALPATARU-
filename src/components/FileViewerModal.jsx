@@ -58,15 +58,25 @@ function highlightCppLine(rawLine) {
 export default function FileViewerModal({ isOpen, onClose, initialTab = 'cpp' }) {
   const [activeTab, setActiveTab] = useState(initialTab);
   const [copied, setCopied] = useState(false);
+  const [codeText, setCodeText] = useState(mainCppSource);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterQuery, setFilterQuery] = useState('');
   const codeContainerRef = useRef(null);
 
-  // Sync initial tab when modal opens
+  // Sync initial tab when modal opens and fetch freshest main.cpp
   useEffect(() => {
     if (isOpen) {
       setActiveTab(initialTab);
       document.body.style.overflow = 'hidden';
+      // Always fetch freshest main.cpp from public directory
+      fetch(`/main.cpp?t=${Date.now()}`)
+        .then((res) => (res.ok ? res.text() : null))
+        .then((text) => {
+          if (text && text.trim().length > 0) {
+            setCodeText(text);
+          }
+        })
+        .catch(() => {});
     } else {
       document.body.style.overflow = '';
     }
@@ -88,8 +98,8 @@ export default function FileViewerModal({ isOpen, onClose, initialTab = 'cpp' })
 
   // Code lines memo
   const allLines = useMemo(() => {
-    return mainCppSource.split('\n');
-  }, []);
+    return codeText.split('\n');
+  }, [codeText]);
 
   // Filtered or search lines
   const displayedLines = useMemo(() => {
@@ -106,10 +116,10 @@ export default function FileViewerModal({ isOpen, onClose, initialTab = 'cpp' })
   const handleCopyCode = async () => {
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(mainCppSource);
+        await navigator.clipboard.writeText(codeText);
       } else {
         const textarea = document.createElement('textarea');
-        textarea.value = mainCppSource;
+        textarea.value = codeText;
         textarea.style.position = 'fixed';
         textarea.style.opacity = '0';
         document.body.appendChild(textarea);
@@ -162,7 +172,7 @@ export default function FileViewerModal({ isOpen, onClose, initialTab = 'cpp' })
               >
                 <FileCode size={18} className="tab-icon" />
                 <span className="tab-title">main.cpp</span>
-                <span className="tab-badge">28 KB • C++</span>
+                <span className="tab-badge">{(new Blob([codeText]).size / 1024).toFixed(1)} KB • C++</span>
               </button>
 
               <button
@@ -239,8 +249,8 @@ export default function FileViewerModal({ isOpen, onClose, initialTab = 'cpp' })
                 <div className="code-sub-bar">
                   <div className="code-info-meta">
                     <span className="code-lang-tag">C++ 20</span>
-                    <span className="code-meta-item">{allLines.length} lines</span>
-                    <span className="code-meta-item">28,542 bytes</span>
+                    <span className="code-meta-item">{allLines.length.toLocaleString()} lines</span>
+                    <span className="code-meta-item">{new Blob([codeText]).size.toLocaleString()} bytes</span>
                   </div>
 
                   <div className="code-search-box">

@@ -6,6 +6,9 @@ import { mainCppSource } from '../data/mainCppCode';
 export default function ProjectFilesSection({ onOpenFileModal }) {
   const [copiedCpp, setCopiedCpp] = useState(false);
 
+  const cppLinesCount = mainCppSource ? mainCppSource.split('\n').length : 1916;
+  const cppSizeKb = mainCppSource ? (new Blob([mainCppSource]).size / 1024).toFixed(1) : '30.7';
+
   const handleCopyCpp = async () => {
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -72,8 +75,8 @@ export default function ProjectFilesSection({ onOpenFileModal }) {
               </div>
               <div className="card-status-badges">
                 <span className="badge-tag">C++ Source</span>
-                <span className="badge-tag">28.5 KB</span>
-                <span className="badge-tag">1,764 Lines</span>
+                <span className="badge-tag">{cppSizeKb} KB</span>
+                <span className="badge-tag">{cppLinesCount.toLocaleString()} Lines</span>
               </div>
             </div>
 
