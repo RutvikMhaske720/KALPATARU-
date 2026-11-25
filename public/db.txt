@@ -1,97 +1,417 @@
-A = [[1, 2]
-     [3, 4]]
-
-B = [[8, 7]
-     [6, 5]]
-
-scaler = 5
-
-#  ----------------------------------------------->  matrix addition function
-
-def mat_add(mat1, mat2):
-	
-	rows = len(mat1)
-	cols = len(mat1[0])
-
-	result = []
-	for i in range(rows) :
-		result_row = []
-		
-		for j in range(cols):
-			value = mat1[i][j] + mat2[i][j]
-			result_row.append(value)
-		
-		result.append(result_row)
-	
-	return result
+#1a
 
 
+# Input Matrices
+A = [[2, 3], [4, 5]]
+B = [[1, 0], [2, 1]]
 
-#  ------------------------------------------------------>  matrix  multiplication
+# Matrix Addition
+def addition(A, B):
+    return [[A[i][j] + B[i][j] for j in range(2)] for i in range(2)]
 
-def mat_multiply(mat1, mat2):
+# Matrix Multiplication
+def multiplication(A, B):
+    C = [[0, 0], [0, 0]]
 
-	rows_mat1 = len(mat1)
-	cols_mat2 = len(mat2[0])
-	cols_mat1 = len(mat1[0])
-	
-	result_mat = []
-	
-	for i in range(rows_mat1):
-		result_mat_row = []
-		
-		for j in range(cols_mat2):
-			value = 0
-			for k in range(cols_mat1):
-				value = value + (mat1[i][k] * mat2[k][j])
-			
-			result_mat_row.append(value)
-		
-		result_mat.append(result_mat_row)
-	
-	return result_mat
+    for i in range(2):
+        for j in range(2):
+            for k in range(2):
+                C[i][j] += A[i][k] * B[k][j]
+
+    return C
+
+# Scalar Multiplication
+def scalar(A, n):
+    return [[A[i][j] * n for j in range(2)] for i in range(2)]
+
+# Display Results
+print("Matrix A:", A)
+print("Matrix B:", B)
+print("Addition:", addition(A, B))
+print("Multiplication:", multiplication(A, B))
+print("Scalar Multiplication:", scalar(A, 3))
 
 
 
-#  ----------------------------------------------------->   scalar multiplication
-
-def scaler_multiply(mat, scaler):
-	rows = len(mat)
-	cols = len(mat[0])
-	
-	result_mat = []
-	
-	for i  in range(rows):
-		result_row_mat = []
-		value = 0
-		
-		for j in range(cols):
-			value = scaler*mat[i][j]
-			result_row_mat.append(value)
-	
-		result_mat.append(result_row_mat)
-
-	return result_mat	
+#1b
 
 
-
-add_A_B = mat_add(A, B)
-print(f"Addition of matrices : {add_A_B}")
-
-multiply_A_B = mat_multiply(A, B)
-print(f"Multiplication : {multiply_A_B}")
-
-scaler_A = scaler_multiply(A, scaler)
-print(f"Scaler multiplication : {scaler_A})
-
-
-#   ---------------------------------------------------------------->   numpy checking
 
 import numpy as np
 
-An = np.array(A)
-Bn = np. array(B)
+# Input Matrix
+A = np.array([[4, 1, 0],
+              [2, 3, 0],
+              [0, 0, 5]], dtype=float)
 
-print(f"addition = {An + Bn}")
-print(f"multiplication = {An @ Bn}")
-print(f"scaler multiplication = {scaler * An}")
+# Find Eigenvalues and Eigenvectors
+values, vectors = np.linalg.eig(A)
+
+print("Original Matrix A:")
+print(A)
+
+print("\nEigenvalues:")
+print(values)
+
+print("\nEigenvectors:")
+print(vectors)
+
+# Diagonalization
+P = vectors
+D = np.diag(values)
+P_inv = np.linalg.inv(P)
+
+print("\nDiagonal Matrix D:")
+print(D)
+
+# Verify Diagonalization
+print("\nReconstructed Matrix (P * D * P inverse):")
+print(np.round(P @ D @ P_inv, 2))
+
+# Calculate A^5 using direct method
+A1 = np.linalg.matrix_power(A, 5)
+
+# Calculate A^5 using diagonalization
+A2 = P @ np.diag(values**5) @ P_inv
+
+print("\nA^5 using Direct Method:")
+print(np.round(A1, 2))
+
+print("\nA^5 using Diagonalization:")
+print(np.round(A2.real, 2))
+
+
+
+
+
+#2a
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import binom, norm
+
+# Binomial Distribution
+n = 10
+p = 0.4
+
+k = np.arange(11)
+y = binom.pmf(k, n, p)
+
+print("Binomial Distribution:")
+for i in range(11):
+    print("P(X =", i, ") =", round(y[i], 4))
+
+data = np.random.binomial(n, p, 10000)
+
+print("\nTheoretical mean:", n*p)
+print("Simulated mean:", round(np.mean(data), 4))
+print("Theoretical variance:", n*p*(1-p))
+print("Simulated variance:", round(np.var(data), 4))
+
+# Normal Distribution
+x = np.linspace(-4, 4, 400)
+z = norm.pdf(x, 0, 1)
+
+prob = norm.cdf(1) - norm.cdf(-1)
+
+print("\nNormal Distribution:")
+print("P(-1 < X < 1):", round(prob, 4))
+
+# Graphs
+plt.subplot(1, 2, 1)
+plt.bar(k, y)
+plt.title("Binomial Distribution")
+plt.xlabel("Successes")
+plt.ylabel("Probability")
+
+plt.subplot(1, 2, 2)
+plt.plot(x, z)
+plt.fill_between(x, z, where=(x >= -1) & (x <= 1), alpha=0.3)
+plt.title("Normal Distribution")
+plt.xlabel("X")
+plt.ylabel("Density")
+
+plt.tight_layout()
+plt.show()
+
+
+
+
+
+#2c
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+# Population
+pop = np.random.uniform(0, 1, 100000)
+
+# Sample Means
+means = []
+for i in range(1000):
+    sample = np.random.choice(pop, 30)
+    means.append(np.mean(sample))
+
+# Calculations
+m = np.mean(means) #mean
+s = np.std(means) #std. deviation
+se = np.std(pop) / np.sqrt(30) #std.error
+
+
+print(len(means))
+
+
+print("Population mean: ",round(np.mean(pop),4))
+print("Population std dev:     ",round(np.std(pop),4))    
+print("Mean of 1000 sample means:  ",round(m,4))
+print("Std dev of 1000 sample means: ",round(s,4))
+print("Theoretical standard error: ",round(se,4))
+
+# Graph
+x = np.linspace(min(means), max(means), 500)
+
+plt.hist(means, bins=30, density=True, alpha=0.6,
+         color="skyblue", edgecolor="white",
+         label="Sampling distribution of the mean (simulated)")
+
+plt.plot(x, norm.pdf(x, m, s), "r", linewidth=2,
+         label="Normal curve predicted by CLT")
+
+plt.title("Central Limit Theorem: Uniform population -> Normal sampling distribution")
+plt.xlabel("Sample mean")
+plt.ylabel("Density")
+plt.legend()
+plt.grid(alpha=0.3)
+plt.show()
+
+
+
+
+
+
+
+
+
+#3a
+
+
+
+
+import numpy as np
+from scipy.stats import norm
+
+def z_test(data, mu):
+    n = len(data)
+    x = np.mean(data)
+    s = np.std(data, ddof=1)
+
+    z = (x - mu) / (s / np.sqrt(n))
+    p = 2 * (1 - norm.cdf(abs(z)))
+
+    print("n                  :", n)
+    print("Sample Mean        :", round(x, 4))
+    print("Hypothesized Mean  :", mu)
+    print("Z-statistic        :", round(z, 4))
+    print("p-value            :", round(p, 6))
+    print("alpha              :", 0.05)
+
+    if p <= 0.05:
+        print("Conclusion         : Reject H0")
+        print("\nWe REJECT the claim that mean fill volume is 50 ml.")
+    else:
+        print("Conclusion         : Fail to Reject H0")
+        print("\nWe DO NOT REJECT the claim that mean fill volume is 50 ml.")
+
+# Main Program
+np.random.seed(1)
+data = np.random.normal(50.6, 2.0, 40)
+
+z_test(data, 50)
+
+
+
+
+
+
+#3d
+
+
+
+
+
+import numpy as np
+from scipy.stats import f
+
+def f_test(A, B):
+    v1 = np.var(A, ddof=1)
+    v2 = np.var(B, ddof=1)
+
+    n1 = len(A)
+    n2 = len(B)
+
+    if v1 >= v2:
+        F = v1 / v2
+        df1 = n1 - 1
+        df2 = n2 - 1
+    else:
+        F = v2 / v1
+        df1 = n2 - 1
+        df2 = n1 - 1
+
+    p = 2 * min(f.cdf(F, df1, df2), 1 - f.cdf(F, df1, df2))
+    critical = f.ppf(0.975, df1, df2)
+
+    print("Variance 1       :", round(v1, 4))
+    print("Variance 2       :", round(v2, 4))
+    print("F-statistic      :", round(F, 4))
+    print("df1, df2         :", (df1, df2))
+    print("Critical F       :", round(critical, 4))
+    print("p-value          :", round(p, 6))
+
+    if F > critical:
+        print("Conclusion       : Reject H0 (variances differ)")
+    else:
+        print("Conclusion       : Fail to Reject H0 (variances equal)")
+
+# Main Program
+A = [10.2, 9.8, 10.5, 10.1, 9.9, 10.3, 10.0]
+B = [9.5, 10.6, 9.2, 10.8, 9.4, 10.9, 9.1]
+
+f_test(A, B)
+
+
+
+
+
+
+
+
+#4b
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Function 1: Validate Matrix
+def validate(P):
+    if P.shape[0] != P.shape[1] or not np.allclose(P.sum(axis=1), 1):
+        raise ValueError("Invalid Matrix")
+    return P
+
+# Function 2: Calculate n-step Matrix
+def transition(P, n):
+    return np.linalg.matrix_power(validate(P), n)
+
+# Transition Matrix
+P = np.array([
+    [0.7, 0.2, 0.1],
+    [0.1, 0.6, 0.3],
+    [0.4, 0.2, 0.4]
+])
+
+names = ["Sunny", "Cloudy", "Rainy"]
+
+# Print Matrices
+for n in [1, 2, 5, 10, 20]:
+    print("\nP^", n, ":\n", np.round(transition(P, n), 4))
+
+# Plot Graph
+for i in range(3):
+    values = [transition(P, n)[0][i] for n in range(1, 21)]
+    plt.plot(range(1, 21), values, marker="o", label=names[i])
+
+plt.xlabel("Steps")
+plt.ylabel("Probability")
+plt.title("Transition Probability from Sunny")
+plt.legend()
+plt.grid()
+plt.show()
+
+
+
+
+
+
+#4d
+
+
+
+
+
+import numpy as np
+
+# Historical Weather Data
+weather = [
+    "Sunny", "Cloudy", "Rainy", "Rainy",
+    "Cloudy", "Sunny", "Cloudy", "Rainy",
+    "Sunny", "Sunny", "Cloudy", "Rainy",
+    "Rainy", "Cloudy", "Sunny", "Cloudy"
+]
+
+# Count Transitions
+counts = {}
+
+for i in range(2, len(weather)):
+    pair = (weather[i-2], weather[i-1])
+    next_state = weather[i]
+
+    if pair not in counts:
+        counts[pair] = {}
+
+    if next_state not in counts[pair]:
+        counts[pair][next_state] = 0
+
+    counts[pair][next_state] += 1
+
+# Display Probabilities
+print("Learned transition probabilities:")
+
+for pair, states in counts.items():
+    total = sum(states.values())
+    print("\n", pair, "->")
+
+    for state, count in states.items():
+        p = count / total
+        print(" ", state, ":", round(p * 100, 2), "%")
+
+# Predict Next State
+current = (weather[-2], weather[-1])
+
+if current in counts:
+    states = list(counts[current].keys())
+    total = sum(counts[current].values())
+
+    probabilities = [counts[current][s] / total for s in states]
+
+    rng = np.random.default_rng(42)
+    prediction = rng.choice(states, p=probabilities)
+
+    print("\nPrevious two states:", current)
+    print("Predicted next state:", prediction)
+else:
+    print("Insufficient data for this pair.")
+
+
+
+
+
+
+
+
+
+#5a
+
+
+
+
+
+
