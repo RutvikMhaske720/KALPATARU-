@@ -1,74 +1,61 @@
-import { useState } from 'react';
-import content from './data/content.json';
-
-// Components
-import FloatingNav from './components/FloatingNav';
-import CulturalMotifs from './components/CulturalMotifs';
-import FileViewerModal from './components/FileViewerModal';
-
-// Sections
-import Hero from './sections/Hero';
-import AppJourney from './sections/AppJourney';
-import GovernmentSchemes from './sections/GovernmentSchemes';
-import OfflineExhibition from './sections/OfflineExhibition';
-import FinalShowcase from './sections/FinalShowcase';
-import ProjectFilesSection from './sections/ProjectFilesSection';
-import Footer from './sections/Footer';
-
-/**
- * App — Kalpataru Interactive Showcase
- * Orchestrates all sections into a cohesive immersive story
- */
 export default function App() {
-  const [fileModalOpen, setFileModalOpen] = useState(false);
-  const [fileModalTab, setFileModalTab] = useState('cpp');
-
-  const openFileModal = (tab = 'cpp') => {
-    setFileModalTab(tab);
-    setFileModalOpen(true);
-  };
-
   return (
-    <div className="app" id="app">
-      {/* Grain overlay for textured premium feel */}
-      <div className="grain-overlay" aria-hidden="true" />
+    <div className="no-internet-page">
+      <main className="no-internet-container" role="main">
+        <img
+          src="/no-internet.jpg"
+          alt="No internet - ERR_INTERNET_DISCONNECTED"
+          className="no-internet-image"
+          draggable="false"
+        />
+      </main>
 
-      {/* Subtle cultural background motifs */}
-      <CulturalMotifs />
+      <style>{`
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
 
-      {/* Minimal floating navigation */}
-      <FloatingNav items={content.navigation} />
+        html, body, #root {
+          width: 100%;
+          min-height: 100vh;
+          background-color: #212226;
+          color: #bdc1c6;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+          overflow-x: hidden;
+        }
 
-      {/* 1. Hero / Opening Experience */}
-      <Hero brand={content.brand} onOpenFileModal={openFileModal} />
+        .no-internet-page {
+          min-height: 100vh;
+          width: 100%;
+          background-color: #212226;
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-start;
+          padding: 2.5rem 0 0 clamp(1rem, 6vw, 4rem);
+          user-select: none;
+        }
 
-      {/* 2. App Journey — 10 screens with flow connectors */}
-      <AppJourney
-        screens={content.appScreens}
-        journey={content.journey}
-      />
+        .no-internet-container {
+          width: 100%;
+          max-width: 860px;
+        }
 
-      {/* 4. Government Schemes — Screen 11 */}
-      <GovernmentSchemes data={content.governmentScheme} />
+        .no-internet-image {
+          width: 100%;
+          max-width: 820px;
+          height: auto;
+          display: block;
+          image-rendering: -webkit-optimize-contrast;
+        }
 
-      {/* 5. Offline Exhibition — Screen 12 */}
-      <OfflineExhibition data={content.offlineExhibition} />
-
-      {/* 6. Final Showcase — Screen 13 */}
-      <FinalShowcase data={content.finalScreen} />
-
-      {/* 7. Project Documentation & Source Files (main.cpp & MTP.pdf) */}
-      <ProjectFilesSection onOpenFileModal={openFileModal} />
-
-      {/* 8. Footer */}
-      <Footer />
-
-      {/* Modal File Viewer (Inspect main.cpp & MTP.pdf in window + Copy Code option) */}
-      <FileViewerModal
-        isOpen={fileModalOpen}
-        onClose={() => setFileModalOpen(false)}
-        initialTab={fileModalTab}
-      />
+        @media (max-width: 600px) {
+          .no-internet-page {
+            padding: 1.5rem 1rem 0;
+          }
+        }
+      `}</style>
     </div>
   );
 }
