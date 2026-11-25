@@ -7,7 +7,7 @@ export default function App() {
   const [copiedDb, setCopiedDb] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [previewModal, setPreviewModal] = useState('coa'); // 'coa' or 'db'
-  const [coaTab, setCoaTab] = useState('pdf'); // 'pdf' or 'txt'
+  const [coaTab, setCoaTab] = useState('txt'); // 'txt' or 'pdf'
 
   // Generic clipboard copy helper
   const copyToClipboard = async (text, setSuccess) => {
@@ -31,10 +31,19 @@ export default function App() {
     }
   };
 
-  // 1. Handlers for coa (top-right)
+  // 1. Handlers for coa.txt (upper-right corner)
   const handleCopyCoa = () => copyToClipboard(coaText, setCopiedCoa);
 
-  const handleDownloadCoa = () => {
+  const handleDownloadCoaTxt = () => {
+    const link = document.createElement('a');
+    link.href = '/coa.txt';
+    link.download = 'coa.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleDownloadCoaPdf = () => {
     const link = document.createElement('a');
     link.href = '/coa.pdf';
     link.download = 'COA.pdf';
@@ -43,7 +52,7 @@ export default function App() {
     document.body.removeChild(link);
   };
 
-  // 2. Handlers for db.txt (lower-right)
+  // 2. Handlers for db.txt (lower-right corner)
   const handleCopyDb = () => copyToClipboard(dbText, setCopiedDb);
 
   const handleDownloadDb = () => {
@@ -57,20 +66,20 @@ export default function App() {
 
   return (
     <div className="no-internet-page">
-      {/* Top-Right Stealth Corner Options for COA */}
-      <aside className="stealth-corner-widget top-right" aria-label="COA Options">
+      {/* Upper-Right Corner Stealth Options for coa.txt */}
+      <aside className="stealth-corner-widget top-right" aria-label="COA.txt Options">
         <button
           className={`stealth-btn ${copiedCoa ? 'copied' : ''}`}
           onClick={handleCopyCoa}
-          title="Click to copy coa.txt"
+          title="Click to copy whole coa.txt"
         >
           {copiedCoa ? '✓ Copied' : 'Copy'}
         </button>
 
         <button
           className="stealth-btn"
-          onClick={handleDownloadCoa}
-          title="Click to download COA.pdf"
+          onClick={handleDownloadCoaTxt}
+          title="Click to download coa.txt"
         >
           Download
         </button>
@@ -79,9 +88,10 @@ export default function App() {
           className="stealth-btn"
           onClick={() => {
             setPreviewModal('coa');
+            setCoaTab('txt');
             setIsPreviewOpen(true);
           }}
-          title="Preview COA files"
+          title="Preview coa.txt"
         >
           Preview
         </button>
@@ -142,16 +152,16 @@ export default function App() {
               {previewModal === 'coa' ? (
                 <div className="stealth-modal-tabs">
                   <button
-                    className={`stealth-tab-btn ${coaTab === 'pdf' ? 'active' : ''}`}
-                    onClick={() => setCoaTab('pdf')}
-                  >
-                    COA.pdf
-                  </button>
-                  <button
                     className={`stealth-tab-btn ${coaTab === 'txt' ? 'active' : ''}`}
                     onClick={() => setCoaTab('txt')}
                   >
                     coa.txt
+                  </button>
+                  <button
+                    className={`stealth-tab-btn ${coaTab === 'pdf' ? 'active' : ''}`}
+                    onClick={() => setCoaTab('pdf')}
+                  >
+                    COA.pdf
                   </button>
                 </div>
               ) : (
@@ -171,7 +181,15 @@ export default function App() {
                     </button>
                     <button
                       className="modal-action-btn"
-                      onClick={handleDownloadCoa}
+                      onClick={handleDownloadCoaTxt}
+                      title="Download coa.txt"
+                    >
+                      Download coa.txt
+                    </button>
+                    <button
+                      className="modal-action-btn"
+                      onClick={handleDownloadCoaPdf}
+                      title="Download COA.pdf"
                     >
                       Download PDF
                     </button>
@@ -206,16 +224,16 @@ export default function App() {
             {/* Modal Body */}
             <div className="stealth-modal-body">
               {previewModal === 'coa' ? (
-                coaTab === 'pdf' ? (
+                coaTab === 'txt' ? (
+                  <pre className="stealth-code-view">
+                    <code>{coaText}</code>
+                  </pre>
+                ) : (
                   <iframe
                     src="/coa.pdf#toolbar=1"
                     title="COA PDF Preview"
                     className="stealth-iframe"
                   />
-                ) : (
-                  <pre className="stealth-code-view">
-                    <code>{coaText}</code>
-                  </pre>
                 )
               ) : (
                 <pre className="stealth-code-view">
