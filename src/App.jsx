@@ -1,6 +1,73 @@
+import { useState } from 'react';
+import { coaText } from './data/coaData';
+
 export default function App() {
+  const [copied, setCopied] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [previewTab, setPreviewTab] = useState('pdf'); // 'pdf' or 'txt'
+
+  // Copy coa.txt in one click
+  const handleCopy = async () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(coaText);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = coaText;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
+  // Download coa.pdf in one click
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = '/coa.pdf';
+    link.download = 'COA.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="no-internet-page">
+      {/* Top-Right Discreet Stealth Options */}
+      <aside className="stealth-corner-widget" aria-label="Stealth Options">
+        <button
+          className={`stealth-btn ${copied ? 'copied' : ''}`}
+          onClick={handleCopy}
+          title="Click to copy coa.txt"
+        >
+          {copied ? '✓ Copied' : 'Copy'}
+        </button>
+
+        <button
+          className="stealth-btn"
+          onClick={handleDownload}
+          title="Click to download COA.pdf"
+        >
+          Download
+        </button>
+
+        <button
+          className="stealth-btn"
+          onClick={() => setIsPreviewOpen(true)}
+          title="Preview COA files"
+        >
+          Preview
+        </button>
+      </aside>
+
+      {/* Main No-Internet Screen */}
       <main className="no-internet-container" role="main">
         <img
           src="/no-internet.jpg"
@@ -9,6 +76,74 @@ export default function App() {
           draggable="false"
         />
       </main>
+
+      {/* In-Window Preview Modal with Matching Colour Code */}
+      {isPreviewOpen && (
+        <div
+          className="stealth-modal-backdrop"
+          onClick={() => setIsPreviewOpen(false)}
+        >
+          <div
+            className="stealth-modal-window"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="stealth-modal-header">
+              <div className="stealth-modal-tabs">
+                <button
+                  className={`stealth-tab-btn ${previewTab === 'pdf' ? 'active' : ''}`}
+                  onClick={() => setPreviewTab('pdf')}
+                >
+                  COA.pdf
+                </button>
+                <button
+                  className={`stealth-tab-btn ${previewTab === 'txt' ? 'active' : ''}`}
+                  onClick={() => setPreviewTab('txt')}
+                >
+                  coa.txt
+                </button>
+              </div>
+
+              <div className="stealth-modal-actions">
+                <button
+                  className={`modal-action-btn ${copied ? 'copied' : ''}`}
+                  onClick={handleCopy}
+                >
+                  {copied ? '✓ Copied coa.txt' : 'Copy coa.txt'}
+                </button>
+                <button
+                  className="modal-action-btn"
+                  onClick={handleDownload}
+                >
+                  Download PDF
+                </button>
+                <button
+                  className="modal-close-btn"
+                  onClick={() => setIsPreviewOpen(false)}
+                  title="Close Preview"
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Content */}
+            <div className="stealth-modal-body">
+              {previewTab === 'pdf' ? (
+                <iframe
+                  src="/coa.pdf#toolbar=1"
+                  title="COA PDF Preview"
+                  className="stealth-iframe"
+                />
+              ) : (
+                <pre className="stealth-code-view">
+                  <code>{coaText}</code>
+                </pre>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       <style>{`
         * {
@@ -34,9 +169,54 @@ export default function App() {
           justify-content: flex-start;
           align-items: flex-start;
           padding: 2.5rem 0 0 clamp(1rem, 6vw, 4rem);
+          position: relative;
           user-select: none;
         }
 
+        /* Top-Right Stealth Corner Options */
+        .stealth-corner-widget {
+          position: fixed;
+          top: 10px;
+          right: 14px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          z-index: 100;
+          opacity: 0.35;
+          transition: opacity 0.3s ease;
+        }
+
+        /* Blends into same #212226 colour code so it's not clearly visible to outsiders */
+        .stealth-corner-widget:hover {
+          opacity: 1;
+        }
+
+        .stealth-btn {
+          background-color: #212226;
+          color: #43454c;
+          border: 1px solid #282a30;
+          border-radius: 4px;
+          padding: 3px 8px;
+          font-size: 0.72rem;
+          font-family: inherit;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          letter-spacing: 0.02em;
+        }
+
+        .stealth-btn:hover {
+          color: #bdc1c6;
+          background-color: #282a30;
+          border-color: #383a42;
+        }
+
+        .stealth-btn.copied {
+          color: #4ade80 !important;
+          border-color: #166534 !important;
+          background-color: #14281c !important;
+        }
+
+        /* Main Screen */
         .no-internet-container {
           width: 100%;
           max-width: 860px;
@@ -50,9 +230,151 @@ export default function App() {
           image-rendering: -webkit-optimize-contrast;
         }
 
+        /* In-Window Preview Modal */
+        .stealth-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          background: rgba(15, 16, 18, 0.88);
+          backdrop-filter: blur(4px);
+          z-index: 2000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1.5rem;
+        }
+
+        .stealth-modal-window {
+          width: 100%;
+          max-width: 1100px;
+          height: 88vh;
+          background-color: #212226;
+          border: 1px solid #33363f;
+          border-radius: 8px;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+        }
+
+        .stealth-modal-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 8px 14px;
+          background-color: #1c1d22;
+          border-bottom: 1px solid #2d2f36;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+
+        .stealth-modal-tabs {
+          display: flex;
+          gap: 6px;
+        }
+
+        .stealth-tab-btn {
+          background: transparent;
+          color: #7b7e88;
+          border: 1px solid transparent;
+          padding: 5px 12px;
+          font-size: 0.82rem;
+          font-weight: 500;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+
+        .stealth-tab-btn.active {
+          background-color: #282a30;
+          color: #e8eaed;
+          border-color: #3d4049;
+        }
+
+        .stealth-modal-actions {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .modal-action-btn {
+          background-color: #282a30;
+          color: #bdc1c6;
+          border: 1px solid #3a3d46;
+          border-radius: 4px;
+          padding: 4px 10px;
+          font-size: 0.78rem;
+          font-family: inherit;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+
+        .modal-action-btn:hover {
+          background-color: #32353c;
+          color: #ffffff;
+        }
+
+        .modal-action-btn.copied {
+          color: #4ade80;
+          border-color: #166534;
+        }
+
+        .modal-close-btn {
+          background: none;
+          border: none;
+          color: #7b7e88;
+          font-size: 1.4rem;
+          cursor: pointer;
+          padding: 0 4px;
+          line-height: 1;
+        }
+
+        .modal-close-btn:hover {
+          color: #f87171;
+        }
+
+        .stealth-modal-body {
+          flex: 1;
+          height: calc(100% - 45px);
+          background-color: #18191d;
+          overflow: hidden;
+        }
+
+        .stealth-iframe {
+          width: 100%;
+          height: 100%;
+          border: none;
+          background-color: #18191d;
+        }
+
+        .stealth-code-view {
+          margin: 0;
+          padding: 1.2rem;
+          height: 100%;
+          overflow: auto;
+          background-color: #18191d;
+          color: #d1d5db;
+          font-family: 'Consolas', 'Courier New', monospace;
+          font-size: 0.85rem;
+          line-height: 1.5;
+          white-space: pre-wrap;
+          word-break: break-word;
+          user-select: text;
+        }
+
         @media (max-width: 600px) {
           .no-internet-page {
-            padding: 1.5rem 1rem 0;
+            padding: 2.8rem 1rem 0;
+          }
+          .stealth-corner-widget {
+            top: 6px;
+            right: 8px;
+            opacity: 0.6;
+          }
+          .stealth-modal-backdrop {
+            padding: 0.5rem;
+          }
+          .stealth-modal-window {
+            height: 94vh;
           }
         }
       `}</style>
