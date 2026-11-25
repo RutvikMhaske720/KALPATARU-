@@ -1,15 +1,15 @@
 #1a
 
 
-# Input Matrices
+
 A = [[2, 3], [4, 5]]
 B = [[1, 0], [2, 1]]
 
-# Matrix Addition
+
 def addition(A, B):
     return [[A[i][j] + B[i][j] for j in range(2)] for i in range(2)]
 
-# Matrix Multiplication
+
 def multiplication(A, B):
     C = [[0, 0], [0, 0]]
 
@@ -20,11 +20,11 @@ def multiplication(A, B):
 
     return C
 
-# Scalar Multiplication
+
 def scalar(A, n):
     return [[A[i][j] * n for j in range(2)] for i in range(2)]
 
-# Display Results
+
 print("Matrix A:", A)
 print("Matrix B:", B)
 print("Addition:", addition(A, B))
@@ -39,12 +39,12 @@ print("Scalar Multiplication:", scalar(A, 3))
 
 import numpy as np
 
-# Input Matrix
+
 A = np.array([[4, 1, 0],
               [2, 3, 0],
               [0, 0, 5]], dtype=float)
 
-# Find Eigenvalues and Eigenvectors
+
 values, vectors = np.linalg.eig(A)
 
 print("Original Matrix A:")
@@ -56,7 +56,7 @@ print(values)
 print("\nEigenvectors:")
 print(vectors)
 
-# Diagonalization
+
 P = vectors
 D = np.diag(values)
 P_inv = np.linalg.inv(P)
@@ -64,14 +64,13 @@ P_inv = np.linalg.inv(P)
 print("\nDiagonal Matrix D:")
 print(D)
 
-# Verify Diagonalization
+
 print("\nReconstructed Matrix (P * D * P inverse):")
 print(np.round(P @ D @ P_inv, 2))
 
-# Calculate A^5 using direct method
 A1 = np.linalg.matrix_power(A, 5)
 
-# Calculate A^5 using diagonalization
+
 A2 = P @ np.diag(values**5) @ P_inv
 
 print("\nA^5 using Direct Method:")
@@ -92,7 +91,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import binom, norm
 
-# Binomial Distribution
+
 n = 10
 p = 0.4
 
@@ -110,7 +109,7 @@ print("Simulated mean:", round(np.mean(data), 4))
 print("Theoretical variance:", n*p*(1-p))
 print("Simulated variance:", round(np.var(data), 4))
 
-# Normal Distribution
+
 x = np.linspace(-4, 4, 400)
 z = norm.pdf(x, 0, 1)
 
@@ -119,7 +118,7 @@ prob = norm.cdf(1) - norm.cdf(-1)
 print("\nNormal Distribution:")
 print("P(-1 < X < 1):", round(prob, 4))
 
-# Graphs
+
 plt.subplot(1, 2, 1)
 plt.bar(k, y)
 plt.title("Binomial Distribution")
@@ -149,19 +148,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
-# Population
+
 pop = np.random.uniform(0, 1, 100000)
 
-# Sample Means
+
 means = []
 for i in range(1000):
     sample = np.random.choice(pop, 30)
     means.append(np.mean(sample))
 
-# Calculations
-m = np.mean(means) #mean
-s = np.std(means) #std. deviation
-se = np.std(pop) / np.sqrt(30) #std.error
+
+m = np.mean(means) 
+s = np.std(means) 
+se = np.std(pop) / np.sqrt(30) 
 
 
 print(len(means))
@@ -173,7 +172,7 @@ print("Mean of 1000 sample means:  ",round(m,4))
 print("Std dev of 1000 sample means: ",round(s,4))
 print("Theoretical standard error: ",round(se,4))
 
-# Graph
+
 x = np.linspace(min(means), max(means), 500)
 
 plt.hist(means, bins=30, density=True, alpha=0.6,
@@ -228,7 +227,7 @@ def z_test(data, mu):
         print("Conclusion         : Fail to Reject H0")
         print("\nWe DO NOT REJECT the claim that mean fill volume is 50 ml.")
 
-# Main Program
+
 np.random.seed(1)
 data = np.random.normal(50.6, 2.0, 40)
 
@@ -279,7 +278,7 @@ def f_test(A, B):
     else:
         print("Conclusion       : Fail to Reject H0 (variances equal)")
 
-# Main Program
+
 A = [10.2, 9.8, 10.5, 10.1, 9.9, 10.3, 10.0]
 B = [9.5, 10.6, 9.2, 10.8, 9.4, 10.9, 9.1]
 
@@ -301,17 +300,17 @@ f_test(A, B)
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Function 1: Validate Matrix
+
 def validate(P):
     if P.shape[0] != P.shape[1] or not np.allclose(P.sum(axis=1), 1):
         raise ValueError("Invalid Matrix")
     return P
 
-# Function 2: Calculate n-step Matrix
+
 def transition(P, n):
     return np.linalg.matrix_power(validate(P), n)
 
-# Transition Matrix
+
 P = np.array([
     [0.7, 0.2, 0.1],
     [0.1, 0.6, 0.3],
@@ -320,11 +319,11 @@ P = np.array([
 
 names = ["Sunny", "Cloudy", "Rainy"]
 
-# Print Matrices
+
 for n in [1, 2, 5, 10, 20]:
     print("\nP^", n, ":\n", np.round(transition(P, n), 4))
 
-# Plot Graph
+
 for i in range(3):
     values = [transition(P, n)[0][i] for n in range(1, 21)]
     plt.plot(range(1, 21), values, marker="o", label=names[i])
@@ -357,7 +356,7 @@ weather = [
     "Rainy", "Cloudy", "Sunny", "Cloudy"
 ]
 
-# Count Transitions
+
 counts = {}
 
 for i in range(2, len(weather)):
@@ -372,7 +371,7 @@ for i in range(2, len(weather)):
 
     counts[pair][next_state] += 1
 
-# Display Probabilities
+
 print("Learned transition probabilities:")
 
 for pair, states in counts.items():
@@ -383,7 +382,7 @@ for pair, states in counts.items():
         p = count / total
         print(" ", state, ":", round(p * 100, 2), "%")
 
-# Predict Next State
+
 current = (weather[-2], weather[-1])
 
 if current in counts:
@@ -415,3 +414,270 @@ else:
 
 
 
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+x = [2, 4, 6, 8, 10, 3, 7, 5, 9, 1]
+y = [50, 60, 68, 82, 90, 55, 75, 65, 88, 40]
+
+
+x_mean = np.mean(x)
+y_mean = np.mean(y)
+
+
+a = np.sum((np.array(x) - x_mean) * (np.array(y) - y_mean))
+b = np.sqrt(np.sum((np.array(x) - x_mean)**2))
+c = np.sqrt(np.sum((np.array(y) - y_mean)**2))
+
+r = a / (b * c)
+
+print("Pearson correlation coefficient:", round(r, 4))
+
+if r > 0.7:
+    print("Interpretation: strong positive")
+elif r > 0.3:
+    print("Interpretation: moderate positive")
+elif r > -0.3:
+    print("Interpretation: weak/no linear")
+elif r > -0.7:
+    print("Interpretation: moderate negative")
+else:
+    print("Interpretation: strong negative")
+
+
+m, c = np.polyfit(x, y, 1)
+
+plt.scatter(x, y, color="teal", label="Data points")
+plt.plot(x, np.array(x)*m + c, "r--", label="Best-fit line")
+
+plt.title(f"Hours Studied vs Marks Obtained (r = {r:.3f})")
+plt.xlabel("Hours Studied")
+plt.ylabel("Marks Obtained")
+plt.legend()
+plt.grid()
+plt.show()
+
+
+
+
+
+
+#5d
+
+
+
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+
+np.random.seed(42)
+n = 120
+
+size = np.random.randint(500, 4000, n)
+bedrooms = np.random.randint(1, 6, n)
+bathrooms = np.random.randint(1, 4, n)
+distance = np.random.randint(1, 30, n)
+
+price = 3000*bedrooms + 5000*bathrooms + 200*size - 1500*distance + np.random.randint(-10000, 10000, n)
+
+data = pd.DataFrame({
+    "Size_sqft": size,
+    "Bedrooms": bedrooms,
+    "Bathrooms": bathrooms,
+    "Distance_km": distance,
+    "Price": price
+})
+
+print("Sample Dataset:")
+print(data.head())
+
+
+X = data[["Size_sqft", "Bedrooms", "Bathrooms", "Distance_km"]]
+y = data["Price"]
+
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+
+y_pred = model.predict(X_test)
+
+
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+print("\nCoefficients:", np.round(model.coef_, 2))
+print("Intercept:", round(model.intercept_, 2))
+print("Mean Squared Error:", round(mse, 2))
+print("R2 Score:", round(r2, 4))
+
+print("\nRegression Equation:")
+print("Price =", round(model.intercept_, 2),
+      "+", round(model.coef_[0], 2), "* Size",
+      "+", round(model.coef_[1], 2), "* Bedrooms",
+      "+", round(model.coef_[2], 2), "* Bathrooms",
+      "+", round(model.coef_[3], 2), "* Distance")
+
+
+plt.figure(figsize=(12, 5))
+
+
+plt.subplot(1, 2, 1)
+plt.scatter(y_test, y_pred, color="steelblue", alpha=0.7)
+plt.plot([y.min(), y.max()], [y.min(), y.max()], "r--", lw=2)
+plt.xlabel("Actual Price")
+plt.ylabel("Predicted Price")
+plt.title("Actual vs Predicted Price")
+
+
+plt.subplot(1, 2, 2)
+plt.scatter(y_pred, y_test-y_pred, color="seagreen", alpha=0.7)
+plt.axhline(0, color="red", linestyle="--")
+plt.xlabel("Predicted Price")
+plt.ylabel("Residual")
+plt.title("Residual Plot")
+
+plt.tight_layout()
+plt.show()
+
+
+
+
+
+
+
+
+#6a
+
+
+
+
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = [1, 2, 3, 4, 5]
+y = [2, 4, 1, 3, 7]
+x_new = 2.5
+
+
+def lagrange(x, y, value):
+    result = 0
+
+    for i in range(len(x)):
+        term = y[i]
+
+        for j in range(len(x)):
+            if i != j:
+                term = term * (value - x[j]) / (x[i] - x[j])
+
+        result = result + term
+
+    return result
+
+
+y_new = lagrange(x, y, x_new)
+
+print("Interpolated value:", round(y_new, 4))
+
+
+x_range = np.linspace(min(x), max(x), 200)
+y_range = [lagrange(x, y, i) for i in x_range]
+
+plt.scatter(x, y, color="red", label="Known points")
+plt.plot(x_range, y_range, color="blue", label="Interpolation curve")
+plt.scatter(x_new, y_new, color="green", marker="x", s=100,
+            label="Interpolated point")
+
+plt.title("Lagrange Interpolation")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.legend()
+plt.grid()
+plt.show()
+
+
+
+
+
+
+
+
+
+#6b
+
+
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = [1, 2, 3, 4]
+y = [1, 4, 9, 16]
+
+def divided_diff(x, y):
+    n = len(x)
+    table = [[0]*n for i in range(n)]
+
+    for i in range(n):
+        table[i][0] = y[i]
+
+    for j in range(1, n):
+        for i in range(n-j):
+            table[i][j] = (table[i+1][j-1] - table[i][j-1]) / (x[i+j] - x[i])
+
+    return table
+
+def newton(x, y, value):
+    table = divided_diff(x, y)
+    result = table[0][0]
+    product = 1
+
+    for i in range(1, len(x)):
+        product *= (value - x[i-1])
+        result += table[0][i] * product
+
+    return result
+
+table = divided_diff(x, y)
+
+for row in table:
+    print(["%.4f" % v for v in row])
+
+value = 2.5
+answer = newton(x, y, value)
+print("Interpolated value:", round(answer, 4))
+
+x_range = np.linspace(min(x), max(x), 200)
+y_range = [newton(x, y, i) for i in x_range]
+
+plt.scatter(x, y, color="red", label="Known points")
+plt.plot(x_range, y_range, color="purple", label="Newton curve")
+plt.scatter(value, answer, color="green", marker="x", s=100)
+
+plt.title("Newton's Divided-Difference Interpolation")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.legend()
+plt.grid()
+plt.show()
