@@ -1,0 +1,97 @@
+A = [[1, 2]
+     [3, 4]]
+
+B = [[8, 7]
+     [6, 5]]
+
+scaler = 5
+
+#  ----------------------------------------------->  matrix addition function
+
+def mat_add(mat1, mat2):
+	
+	rows = len(mat1)
+	cols = len(mat1[0])
+
+	result = []
+	for i in range(rows) :
+		result_row = []
+		
+		for j in range(cols):
+			value = mat1[i][j] + mat2[i][j]
+			result_row.append(value)
+		
+		result.append(result_row)
+	
+	return result
+
+
+
+#  ------------------------------------------------------>  matrix  multiplication
+
+def mat_multiply(mat1, mat2):
+
+	rows_mat1 = len(mat1)
+	cols_mat2 = len(mat2[0])
+	cols_mat1 = len(mat1[0])
+	
+	result_mat = []
+	
+	for i in range(rows_mat1):
+		result_mat_row = []
+		
+		for j in range(cols_mat2):
+			value = 0
+			for k in range(cols_mat1):
+				value = value + (mat1[i][k] * mat2[k][j])
+			
+			result_mat_row.append(value)
+		
+		result_mat.append(result_mat_row)
+	
+	return result_mat
+
+
+
+#  ----------------------------------------------------->   scalar multiplication
+
+def scaler_multiply(mat, scaler):
+	rows = len(mat)
+	cols = len(mat[0])
+	
+	result_mat = []
+	
+	for i  in range(rows):
+		result_row_mat = []
+		value = 0
+		
+		for j in range(cols):
+			value = scaler*mat[i][j]
+			result_row_mat.append(value)
+	
+		result_mat.append(result_row_mat)
+
+	return result_mat	
+
+
+
+add_A_B = mat_add(A, B)
+print(f"Addition of matrices : {add_A_B}")
+
+multiply_A_B = mat_multiply(A, B)
+print(f"Multiplication : {multiply_A_B}")
+
+scaler_A = scaler_multiply(A, scaler)
+print(f"Scaler multiplication : {scaler_A})
+
+
+#   ---------------------------------------------------------------->   numpy checking
+
+import numpy as np
+
+An = np.array(A)
+Bn = np. array(B)
+
+print(f"addition = {An + Bn}")
+print(f"multiplication = {An @ Bn}")
+print(f"scaler multiplication = {scaler * An}")

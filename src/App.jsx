@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import { coaText } from './data/coaData';
+import { dbText } from './data/dbData';
 
 export default function App() {
-  const [copied, setCopied] = useState(false);
+  const [copiedCoa, setCopiedCoa] = useState(false);
+  const [copiedDb, setCopiedDb] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const [previewTab, setPreviewTab] = useState('pdf'); // 'pdf' or 'txt'
+  const [previewModal, setPreviewModal] = useState('coa'); // 'coa' or 'db'
+  const [coaTab, setCoaTab] = useState('pdf'); // 'pdf' or 'txt'
 
-  // Copy coa.txt in one click
-  const handleCopy = async () => {
+  // Generic clipboard copy helper
+  const copyToClipboard = async (text, setSuccess) => {
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(coaText);
+        await navigator.clipboard.writeText(text);
       } else {
         const textarea = document.createElement('textarea');
-        textarea.value = coaText;
+        textarea.value = text;
         textarea.style.position = 'fixed';
         textarea.style.opacity = '0';
         document.body.appendChild(textarea);
@@ -21,15 +24,17 @@ export default function App() {
         document.execCommand('copy');
         document.body.removeChild(textarea);
       }
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
     }
   };
 
-  // Download coa.pdf in one click
-  const handleDownload = () => {
+  // 1. Handlers for coa (top-right)
+  const handleCopyCoa = () => copyToClipboard(coaText, setCopiedCoa);
+
+  const handleDownloadCoa = () => {
     const link = document.createElement('a');
     link.href = '/coa.pdf';
     link.download = 'COA.pdf';
@@ -38,21 +43,33 @@ export default function App() {
     document.body.removeChild(link);
   };
 
+  // 2. Handlers for db.txt (lower-right)
+  const handleCopyDb = () => copyToClipboard(dbText, setCopiedDb);
+
+  const handleDownloadDb = () => {
+    const link = document.createElement('a');
+    link.href = '/db.txt';
+    link.download = 'db.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="no-internet-page">
-      {/* Top-Right Discreet Stealth Options */}
-      <aside className="stealth-corner-widget" aria-label="Stealth Options">
+      {/* Top-Right Stealth Corner Options for COA */}
+      <aside className="stealth-corner-widget top-right" aria-label="COA Options">
         <button
-          className={`stealth-btn ${copied ? 'copied' : ''}`}
-          onClick={handleCopy}
+          className={`stealth-btn ${copiedCoa ? 'copied' : ''}`}
+          onClick={handleCopyCoa}
           title="Click to copy coa.txt"
         >
-          {copied ? '✓ Copied' : 'Copy'}
+          {copiedCoa ? '✓ Copied' : 'Copy'}
         </button>
 
         <button
           className="stealth-btn"
-          onClick={handleDownload}
+          onClick={handleDownloadCoa}
           title="Click to download COA.pdf"
         >
           Download
@@ -60,8 +77,41 @@ export default function App() {
 
         <button
           className="stealth-btn"
-          onClick={() => setIsPreviewOpen(true)}
+          onClick={() => {
+            setPreviewModal('coa');
+            setIsPreviewOpen(true);
+          }}
           title="Preview COA files"
+        >
+          Preview
+        </button>
+      </aside>
+
+      {/* Lower-Right End Stealth Corner Options for db.txt */}
+      <aside className="stealth-corner-widget bottom-right" aria-label="DB Options">
+        <button
+          className={`stealth-btn ${copiedDb ? 'copied' : ''}`}
+          onClick={handleCopyDb}
+          title="Click to copy whole db.txt"
+        >
+          {copiedDb ? '✓ Copied' : 'Copy'}
+        </button>
+
+        <button
+          className="stealth-btn"
+          onClick={handleDownloadDb}
+          title="Click to download db.txt"
+        >
+          Download
+        </button>
+
+        <button
+          className="stealth-btn"
+          onClick={() => {
+            setPreviewModal('db');
+            setIsPreviewOpen(true);
+          }}
+          title="Preview db.txt"
         >
           Preview
         </button>
@@ -89,34 +139,60 @@ export default function App() {
           >
             {/* Modal Header */}
             <div className="stealth-modal-header">
-              <div className="stealth-modal-tabs">
-                <button
-                  className={`stealth-tab-btn ${previewTab === 'pdf' ? 'active' : ''}`}
-                  onClick={() => setPreviewTab('pdf')}
-                >
-                  COA.pdf
-                </button>
-                <button
-                  className={`stealth-tab-btn ${previewTab === 'txt' ? 'active' : ''}`}
-                  onClick={() => setPreviewTab('txt')}
-                >
-                  coa.txt
-                </button>
-              </div>
+              {previewModal === 'coa' ? (
+                <div className="stealth-modal-tabs">
+                  <button
+                    className={`stealth-tab-btn ${coaTab === 'pdf' ? 'active' : ''}`}
+                    onClick={() => setCoaTab('pdf')}
+                  >
+                    COA.pdf
+                  </button>
+                  <button
+                    className={`stealth-tab-btn ${coaTab === 'txt' ? 'active' : ''}`}
+                    onClick={() => setCoaTab('txt')}
+                  >
+                    coa.txt
+                  </button>
+                </div>
+              ) : (
+                <div className="stealth-modal-tabs">
+                  <span className="stealth-tab-label">db.txt</span>
+                </div>
+              )}
 
               <div className="stealth-modal-actions">
-                <button
-                  className={`modal-action-btn ${copied ? 'copied' : ''}`}
-                  onClick={handleCopy}
-                >
-                  {copied ? '✓ Copied coa.txt' : 'Copy coa.txt'}
-                </button>
-                <button
-                  className="modal-action-btn"
-                  onClick={handleDownload}
-                >
-                  Download PDF
-                </button>
+                {previewModal === 'coa' ? (
+                  <>
+                    <button
+                      className={`modal-action-btn ${copiedCoa ? 'copied' : ''}`}
+                      onClick={handleCopyCoa}
+                    >
+                      {copiedCoa ? '✓ Copied coa.txt' : 'Copy coa.txt'}
+                    </button>
+                    <button
+                      className="modal-action-btn"
+                      onClick={handleDownloadCoa}
+                    >
+                      Download PDF
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      className={`modal-action-btn ${copiedDb ? 'copied' : ''}`}
+                      onClick={handleCopyDb}
+                    >
+                      {copiedDb ? '✓ Copied db.txt' : 'Copy db.txt'}
+                    </button>
+                    <button
+                      className="modal-action-btn"
+                      onClick={handleDownloadDb}
+                    >
+                      Download db.txt
+                    </button>
+                  </>
+                )}
+
                 <button
                   className="modal-close-btn"
                   onClick={() => setIsPreviewOpen(false)}
@@ -127,17 +203,23 @@ export default function App() {
               </div>
             </div>
 
-            {/* Modal Content */}
+            {/* Modal Body */}
             <div className="stealth-modal-body">
-              {previewTab === 'pdf' ? (
-                <iframe
-                  src="/coa.pdf#toolbar=1"
-                  title="COA PDF Preview"
-                  className="stealth-iframe"
-                />
+              {previewModal === 'coa' ? (
+                coaTab === 'pdf' ? (
+                  <iframe
+                    src="/coa.pdf#toolbar=1"
+                    title="COA PDF Preview"
+                    className="stealth-iframe"
+                  />
+                ) : (
+                  <pre className="stealth-code-view">
+                    <code>{coaText}</code>
+                  </pre>
+                )
               ) : (
                 <pre className="stealth-code-view">
-                  <code>{coaText}</code>
+                  <code>{dbText}</code>
                 </pre>
               )}
             </div>
@@ -173,11 +255,9 @@ export default function App() {
           user-select: none;
         }
 
-        /* Top-Right Stealth Corner Options */
+        /* Stealth Widgets: same #212226 colour code so they aren't noticeable */
         .stealth-corner-widget {
           position: fixed;
-          top: 10px;
-          right: 14px;
           display: flex;
           align-items: center;
           gap: 6px;
@@ -186,7 +266,16 @@ export default function App() {
           transition: opacity 0.3s ease;
         }
 
-        /* Blends into same #212226 colour code so it's not clearly visible to outsiders */
+        .stealth-corner-widget.top-right {
+          top: 10px;
+          right: 14px;
+        }
+
+        .stealth-corner-widget.bottom-right {
+          bottom: 10px;
+          right: 14px;
+        }
+
         .stealth-corner-widget:hover {
           opacity: 1;
         }
@@ -269,7 +358,18 @@ export default function App() {
 
         .stealth-modal-tabs {
           display: flex;
+          align-items: center;
           gap: 6px;
+        }
+
+        .stealth-tab-label {
+          color: #e8eaed;
+          font-size: 0.85rem;
+          font-weight: 600;
+          padding: 4px 8px;
+          background-color: #282a30;
+          border-radius: 4px;
+          border: 1px solid #3d4049;
         }
 
         .stealth-tab-btn {
@@ -363,10 +463,15 @@ export default function App() {
 
         @media (max-width: 600px) {
           .no-internet-page {
-            padding: 2.8rem 1rem 0;
+            padding: 2.8rem 1rem 3rem;
           }
-          .stealth-corner-widget {
+          .stealth-corner-widget.top-right {
             top: 6px;
+            right: 8px;
+            opacity: 0.6;
+          }
+          .stealth-corner-widget.bottom-right {
+            bottom: 6px;
             right: 8px;
             opacity: 0.6;
           }
