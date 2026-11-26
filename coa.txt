@@ -1,4 +1,8 @@
 1ST ARITHMETIC
+
+
+
+
 %macro WRITE 02
     mov rax,01
     mov rdi,01
@@ -117,10 +121,6 @@ printmenu:
     jmp printmenu
 
 
-; -----------------------------------
-; ADDITION
-; -----------------------------------
-
 addition:
 
     mov rbx,qword[a]
@@ -135,10 +135,6 @@ addition:
     jmp printmenu
 
 
-; -----------------------------------
-; SUBTRACTION
-; -----------------------------------
-
 subtraction:
 
     mov rbx,qword[a]
@@ -152,10 +148,6 @@ subtraction:
 
     jmp printmenu
 
-
-; -----------------------------------
-; MULTIPLICATION
-; -----------------------------------
 
 multiplication:
 
@@ -179,13 +171,9 @@ multiplication:
     jmp printmenu
 
 
-; -----------------------------------
-; DIVISION
-; -----------------------------------
-
 division:
 
-    ; Check if divisor is zero
+   
     cmp qword[b],0
     je divide_zero
 
@@ -193,9 +181,6 @@ division:
     mov rax,qword[a]
 
     div qword[b]
-
-    ; RAX = quotient
-    ; RDX = remainder
 
     mov qword[c],rax
     mov qword[d],rdx
@@ -213,28 +198,16 @@ division:
     jmp printmenu
 
 
-; -----------------------------------
-; DIVISION BY ZERO
-; -----------------------------------
-
 divide_zero:
 
     WRITE msg8,len8
     jmp printmenu
 
 
-; -----------------------------------
-; EXIT
-; -----------------------------------
-
 exit:
 
     EXIT
 
-
-; -----------------------------------
-; ACCEPT HEX NUMBER
-; -----------------------------------
 
 accept:
 
@@ -272,10 +245,6 @@ sub30:
 
     ret
 
-
-; -----------------------------------
-; DISPLAY HEX NUMBER
-; -----------------------------------
 
 display:
 
@@ -317,6 +286,11 @@ add30:
 
 
 2ND BCD2HEX HEX2BCD
+
+
+
+
+
 %macro WRITE 2
     mov rax, 01
     mov rdi, 01
@@ -563,7 +537,15 @@ exit:
 
 
 
+
+
 3RD SUCCESSIVE & SHIFTADD
+
+
+
+
+
+
 
 %macro WRITE 2
     mov rax, 1
@@ -659,8 +641,6 @@ printmenu:
     jmp printmenu
 
 
-; SUCCESSIVE ADDITION METHOD
-
 succadd:
 
     mov rbx,00H
@@ -683,8 +663,6 @@ l1:
 
     jmp printmenu
 
-
-; SHIFT AND ADD METHOD
 
 shiftadd:
 
@@ -736,13 +714,9 @@ shifta:
     jmp printmenu
 
 
-; EXIT
-
 exit:
     EXIT
 
-
-; ACCEPT PROCEDURE
 
 accept:
 
@@ -775,8 +749,6 @@ sub30:
 
     ret
 
-
-; DISPLAY PROCEDURE
 
 display:
 
@@ -813,6 +785,11 @@ add30:
 
 
 4TH STRING
+
+
+
+
+
 %macro READ 2
     mov rax, 00
     mov rdi, 00
@@ -1107,6 +1084,10 @@ exit:
 
 
 5th QUADRATIC
+
+
+
+
 extern printf, scanf
 
 %macro PRINT 02
