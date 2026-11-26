@@ -425,7 +425,7 @@ hex2bcd:
     mov rsi,char_buff
 
     mov rax,00H
-    mov rbx,10H
+    mov rbx,16H
 
 up2:
 
