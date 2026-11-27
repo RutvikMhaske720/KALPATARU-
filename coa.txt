@@ -1196,3 +1196,54 @@ complexroot:
   PRINT fmt2, msg3
   mov rax, 00
   RET
+
+
+
+
+
+
+simulation 
+
+
+
+1. If - Else :MOV #0, R02 IN 0,
+ R00 IN 0, 
+ R01 CMP R01,
+  R00 JGT 35
+   JLT 45 
+   JEQ 55 
+   MOV #1,R02
+    JMP 61 
+    MOV #2, R02 
+    JMP 61 
+    MOV #3,R02
+     OUT R02,
+ 1 HLT
+
+
+
+2.fro LOOP
+
+
+ IN 0, R00
+IN 0, R01
+SUB #48, R00
+SUB #48, R01
+MOV #0, R02
+ADD R00, R02
+LOOP 30, R01
+ADD #48, R02
+OUT R02, 1
+HLT
+
+
+3.add
+
+IN 0, R00
+IN 0, R01
+SUB #48, R00
+SUB #48, R01
+ADD R00, R01
+ADD #48, R01
+OUT R01, 1
+HLT
